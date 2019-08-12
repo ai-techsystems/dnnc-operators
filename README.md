@@ -5,3 +5,4 @@ development and discussion of DNNC operators
 
 * MatMul (2D version)
 * Add (2D version)
+* ThresholdedRelu
