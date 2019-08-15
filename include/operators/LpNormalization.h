@@ -27,18 +27,125 @@
 
 using namespace Eigen;
 
+
 namespace dnnc {
 template <typename T> class LpNormalization : public baseOperator<T> {
   //  LpNormalization attributes
+  // default
+protected:
+   int p=2;int axis=1;
+
 public:
   LpNormalization(std::string name = "opLpNormalization")
       : baseOperator<T>(opLpNormalization, name) {}
-
+ 
   // bool getAttribute<int>(OPATTR attrName, int& obj) ;
+   bool getAttribute(OPATTR attrName, int &obj)
+      {
+        if (attrName == attr_p) {
+          obj=p;
+          return true;
+        }
+        else if(attrName == attr_axis){
+            obj=axis;
+          return true;
+        }
+        return false;
+      }
 
-  void compute(void) {
-    // CHANGE return-type and args
-    // AND ADD YOUR FUNCTIONAL CODE HERE
+      void setAttribute(OPATTR attrName, int &obj)
+      {
+        if (attrName == attr_axis) {
+          axis = obj;
+        }
+        else if(attrName == attr_p)
+            p=obj;
+
+       }
+
+
+      static bool compare()
+      {
+        return ( (typeid(T) == typeid(float))||(typeid(T) == typeid(double)) );
+      }
+
+      
+
+     tensor<T> compute(tensor<T> & input) {
+        if(!compare() )
+          throw std::invalid_argument("Constrain input and output types to float tensors.");
+   
+    tensor<T> result(input.shape(), input.name());
+
+		  
+		  DNNC_EIGEN_MATRIX(eigenMatrixA, input) ; 
+		 
+
+		 
+      if(axis==0 && p==1){
+      int i,j;
+      for (i=0 ; i<int(input.shape()[1]); i++){
+        float sum=0;
+				for (j=0 ; j< int(input.shape()[0]); j++){
+					 sum+=abs(eigenMatrixA(j,i));
+				}
+     
+        for ( j=0 ; j< int(input.shape()[0]); j++){
+			    eigenMatrixA(j,i)/=sum;
+            
+			    }
+        }
+      }
+
+      if(axis==1 && p==1){
+      int i,j;
+      for ( i=0 ; i<int(input.shape()[0]); i++){
+        float sum=0;
+				for ( j=0 ; j< int(input.shape()[1]); j++){
+					 sum+=abs(eigenMatrixA(i,j));
+				}
+          
+          for ( j=0 ; j< int(input.shape()[1]); j++){
+			    eigenMatrixA(i,j)/=sum;
+				}          
+			 }
+    }
+        
+    if(axis==0 && p==2){
+     int i,j;
+      for ( i=0 ; i<int(input.shape()[1]); i++){
+         float sum=0;
+				for ( j=0 ; j< int(input.shape()[0]); j++){
+					 sum+=(eigenMatrixA(j,i)*eigenMatrixA(j,i));
+				}
+        for ( j=0 ; j< int(input.shape()[0]); j++){
+					eigenMatrixA(j,i)=eigenMatrixA(j,i)/sqrt(sum);
+        
+				}   
+			}
+    }
+
+    //default cases
+    if(axis==1 && p==2){
+      int i,j;
+      for (i=0 ; i<int(input.shape()[0]); i++){
+        float sum=0;
+				for ( j=0 ; j< int(input.shape()[1]); j++){
+					 sum+=(eigenMatrixA(i,j)*eigenMatrixA(i,j));
+				}
+          
+      
+        for ( j=0 ; j< int(input.shape()[1]); j++){
+					eigenMatrixA(i,j)=eigenMatrixA(i,j)/sqrt(sum);
+        
+				}   
+			}
+    }
+       Matrix<T, Dynamic, Dynamic> eResult=eigenMatrixA;
+		  
+		  result.load( eResult.data() ); 
+
+		  return result;
   }
 };
 } // namespace dnnc

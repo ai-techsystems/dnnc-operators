@@ -29,6 +29,19 @@ using namespace Eigen;
 #ifdef DNNC_MATMULINTEGER_TEST
 #include <iostream>
 int main() {
-  // ADD YOUR TEST CODE HERE
+ int d1[6] = {1, 2, 3, 4, 5, 6};
+  int d2[6] = {1, 2, 3, 4, 5, 6};
+  tensor<int> a(2, 3);
+  a.load(d1);
+  tensor<int> b(3, 2);
+  b.load(d2);
+
+  MatMulInteger<int> m("localOpName");
+  auto result = m.compute(a, b);
+
+  std::cout << result;
+  std::cout << "\n";
+
+  return 0;
 }
 #endif

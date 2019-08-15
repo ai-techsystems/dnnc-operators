@@ -36,9 +36,29 @@ public:
 
   // bool getAttribute<int>(OPATTR attrName, int& obj) ;
 
-  void compute(void) {
-    // CHANGE return-type and args
-    // AND ADD YOUR FUNCTIONAL CODE HERE
+ tensor<int> 
+ compute(tensor<T> &a, tensor<T> &b) {
+    if (a.rank() != 2 || b.rank() != 2)
+      throw std::invalid_argument("invalid tensor rank.");
+
+    if (a.shape()[1] != b.shape()[0])
+      throw std::invalid_argument(
+          "tensor dimenions not appropriate for multiplication(integer) operator.");
+
+    tensor<int> result(a.shape()[0], b.shape()[1]);
+
+    DNNC_EIGEN_MATRIX(eigenMatrixA, a);
+    DNNC_EIGEN_MATRIX(eigenMatrixB, b);
+
+    Matrix<int, Dynamic, Dynamic> eResult = eigenMatrixA * eigenMatrixB;
+
+    result.load(eResult.data());
+
+    return result;
   }
 };
 } // namespace dnnc
+
+
+
+//TODO:Higher rank support

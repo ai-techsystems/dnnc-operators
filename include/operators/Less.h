@@ -35,9 +35,26 @@ public:
 
   // bool getAttribute<int>(OPATTR attrName, int& obj) ;
 
-  void compute(void) {
-    // CHANGE return-type and args
-    // AND ADD YOUR FUNCTIONAL CODE HERE
+  static bool comp(T x,T y)
+      {
+        return x<y;
+      }
+      
+      tensor<bool> compute(tensor<T>& a,tensor<T>& b)
+    {
+       if (a.rank() <= 4){
+      if (a.shape() != b.shape())
+        throw std::invalid_argument("tensor dimenions not appropriate for Less operator.");
+       
+      tensor<bool> result(a.shape(),a.name());
+      for(size_t i=0;i< a.length();i++)
+      {
+        result[i]=comp(a[i],b[i]);
+      }
+      return result;
+    }
+    else
+    throw std::invalid_argument("tensor dimenions not appropriate for Less operator.");
   }
 };
 } // namespace dnnc

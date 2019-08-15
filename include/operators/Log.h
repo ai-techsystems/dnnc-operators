@@ -35,9 +35,37 @@ public:
 
   // bool getAttribute<int>(OPATTR attrName, int& obj) ;
 
-  void compute(void) {
-    // CHANGE return-type and args
-    // AND ADD YOUR FUNCTIONAL CODE HERE
+  static T _log(T x){
+		   
+      	return log(x);
+      }
+
+    static bool compare()
+      {
+        return ( (typeid(T) == typeid(float))||(typeid(T) == typeid(double)) );
+      }
+
+      tensor<T> 
+      compute(tensor<T>& a)
+	  {  
+       if(!compare() )
+          throw std::invalid_argument("Constrain input and output types to float tensors.");
+
+      if (a.rank() <= 4) {
+		  
+		  tensor<T> result(a.shape(),a.name()); 
+		  
+		  for(size_t i=0;i< a.length();i++)
+      {
+        result[i]=_log(a[i]);
+      }
+      return result;
+   }
+   
+   else
+      throw std::invalid_argument("tensor dimenions not appropriate for log operator.");
   }
 };
 } // namespace dnnc
+
+
