@@ -30,12 +30,8 @@ using namespace Eigen;
 namespace dnnc {
 template <typename T> class Div : public baseOperator<T> {
 public:
-  Div(std::string name = "opDiv", opAttributes *attrs = 0x0)
+  Div(std::string name = "opDiv")
       : baseOperator<T>(opDiv, name, attrs) {}
-
-  	  static T _div(T x , T y){
-      	return (x/y);
-      }
 
       tensor<T> 
       compute(tensor<T>& a, tensor<T>& b)

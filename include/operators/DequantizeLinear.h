@@ -31,15 +31,14 @@ namespace dnnc {
 template <typename T> class DequantizeLinear : public baseOperator<T> {
 public:
   DequantizeLinear(std::string name = "opDequantizeLinear")
-      : baseOperator<T>(opDequantizeLinear, name, attrs) {}
-	bool getAttribute(OPATTR attrName, tensor<T>&obj) {
+      : baseOperator<T>(opDequantizeLinear, name) {}
 	    
   tensor<T> 
       compute(tensor<T>& a,tensor<T>& a_scale,tensor<T>& a_zero_point)
 	  {
 		  if (a_scale.shape() != a_zero_point.shape())
 			  throw std::invalid_argument("tensor dimenions not appropriate for DequantizeLinear operator."); 
-		  if (typeid(a_zero_point)!=typeid("int") || typeid(a)!=typeid("int"))
+		  if (typeid(a_zero_point)!=typeid(tensor<int>) || typeid(a)!=typeid(tensor<int>))
 			  throw std::invalid_argument("tensor types not appropriate for DequantizeLinear operator."); 
 		  
 		  tensor<T> result(a.shape()[0], a.shape()[1]); 

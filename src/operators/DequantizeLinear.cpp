@@ -36,7 +36,7 @@ int main() {
 	tensor<float> b(1,1); b.load(d2);
 	tensor<int> c(1,1); c.load(d3);
 
-	DequantizeLinear<float> m("localOpName", 0x0);
+	DequantizeLinear<float> m("localOpName");
 	auto result = m.compute(a, b, c);
 
 	std::cout << result ;
