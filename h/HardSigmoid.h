@@ -1,0 +1,86 @@
+// Copyright 2018 The AITS DNNC Authors.All Rights Reserved.
+//
+// Licensed to the Apache Software Foundation(ASF) under one
+// or more contributor license agreements.See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.See the License for the
+// specific language governing permissionsand limitations
+// under the License.
+//
+// This file is part of AITS DNN compiler maintained at
+// https://github.com/ai-techsystems/dnnCompiler
+//
+
+#pragma once
+#include "operators/baseOperator.h"
+#include <string>
+#include <typeinfo>
+using namespace Eigen;
+
+namespace dnnc {
+template <typename T> class HardSigmoid : public baseOperator<T> {
+public:
+  HardSigmoid(std::string name = "opHardSigmoid")
+      : baseOperator<T>(opHardSigmoid, name) {}
+      static bool compare()
+      {
+        return ( (typeid(T) == typeid(float))||(typeid(T) == typeid(double)) );
+      }
+      float alpha = 0.2;
+      float beta = 0.5;
+      bool getAttribute(OPATTR attrName, float &obj)
+      {
+        if (attrName == attr_alpha) {
+          obj = alpha;
+          return true;
+        }
+        else if (attrName == attr_beta){
+          obj = beta;
+          return true;
+        }
+        return false;
+      }
+      void setAttribute(OPATTR attrName, float &obj)
+      {
+        if (attrName == attr_alpha) {
+          alpha = obj;
+        }
+        else if (attrName == attr_beta){
+          beta = obj;
+        }
+      }
+      
+      static T Hard_Sigmoid(T x,float alpha,float beta)
+      {
+        T temp=T(alpha * x + beta);
+        temp = (1<temp) ? 1 : temp;
+        temp = (0>temp) ? 0 : temp;
+        return temp;
+      }
+
+      // NOT GOOD to return by value
+      tensor<T> compute(tensor<T>& a)
+      {
+      if(!compare() )
+          throw std::invalid_argument("Constrain input and output types to float tensors.");
+      tensor<T> result(a.shape(),a.name());
+      //max(0, min(1, alpha * x + beta))
+      auto c0 = std::bind(Hard_Sigmoid, std::placeholders::_1, alpha,beta);
+      for(size_t i=0;i< a.length();i++)
+      {
+        result[i]=c0(a[i]);
+      }
+      return result;
+      }
+    };
+} // namespace dnnc
