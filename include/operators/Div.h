@@ -31,7 +31,7 @@ namespace dnnc {
 template <typename T> class Div : public baseOperator<T> {
 public:
   Div(std::string name = "opDiv")
-      : baseOperator<T>(opDiv, name, attrs) {}
+      : baseOperator<T>(opDiv, name) {}
 
       tensor<T> 
       compute(tensor<T>& a, tensor<T>& b)

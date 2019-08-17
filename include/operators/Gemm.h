@@ -29,6 +29,7 @@ using namespace Eigen;
 
 namespace dnnc {
 template <typename T> class Gemm : public baseOperator<T> {
+protected:
 	float alpha = 1.0;
 	float beta = 1.0;
 	int transA = 0;
@@ -36,7 +37,19 @@ template <typename T> class Gemm : public baseOperator<T> {
 
 public:
   Gemm(std::string name = "opGemm")
-      : baseOperator<T>(opGemm, name, attrs) {}
+      : baseOperator<T>(opGemm, name) {}
+     
+     bool getAttribute(OPATTR attrName, int &obj) {
+	    if (attrName == attr_transA) {
+	      obj = transA;
+	      return true;
+	    }
+	    else if (attrName == attr_transB) {
+	      obj = transB;
+	      return true;
+	    }
+	    return false;
+	  }
      bool getAttribute(OPATTR attrName, float&obj) {
 	    if (attrName == attr_alpha) {
 	      obj = alpha;
@@ -48,38 +61,57 @@ public:
 	    }
 	    return false;
 	  }
-	  bool getAttribute(OPATTR attrName, int &obj) {
+
+	  void setAttribute(OPATTR attrName, int &obj) {
 	    if (attrName == attr_transA) {
-	      obj = transA;
-	      return true;
+	      transA = obj;
 	    }
 	    else if (attrName == attr_transB) {
-	      obj = transB;
-	      return true;
+	      transB = obj;
 	    }
-	    return false;
+	  }
+     void setAttribute(OPATTR attrName, float&obj) {
+	    if (attrName == attr_alpha) {
+	      alpha = obj;
+	    }
+	    else if (attrName == attr_beta) {
+	      beta = obj;
+	    }
 	  }
 
      tensor<T> 
   compute(tensor<T>& a, tensor<T>& b, tensor<T>& c)
 	  {
+	  	  if (a.rank()!=2 || b.rank()!=2 || c.rank()!=2)
+			  throw std::invalid_argument("tensor dimenions not appropriate for Gemm operator."); 
 		  tensor<T> result(c.shape()[0],c.shape()[1]); 
 		  DNNC_EIGEN_MATRIX(eigenMatrixA, a) ; 
 		  DNNC_EIGEN_MATRIX(eigenMatrixB, b) ; 
 		  DNNC_EIGEN_MATRIX(eigenMatrixC, c) ; 
 		  Matrix<T, Dynamic, Dynamic> eResult(c.shape()[0],c.shape()[1]);
-		   try{
-				if(transA==0 && transB==0)
+		  
+		  // if (transA==1)
+		  // 	eigenMatrixA.transposeInPlace();
+		  // if (transB==1)
+		  // 	eigenMatrixB.transposeInPlace();
+		  
+		  try{
+		   		// eResult = alpha*(eigenMatrixA * eigenMatrixB) + beta * eigenMatrixC;
+				if(transA==0 && transB==0){
 					eResult = alpha*(eigenMatrixA * eigenMatrixB) + beta * eigenMatrixC;
-				else if(transA==1 && transB==0)
-					eResult = alpha*(eigenMatrixA.transpose() * eigenMatrixB) + beta * eigenMatrixC;
-				else if(transA==0 && transB==1)
-					eResult = alpha*(eigenMatrixA * eigenMatrixB.transpose()) + beta * eigenMatrixC;
-				else if(transA==1 && transB==1)
-					eResult = alpha*(eigenMatrixA.transpose() * eigenMatrixB.transpose()) + beta * eigenMatrixC;
 				}
+				else if(transA==1 && transB==0){
+					eResult = alpha*((eigenMatrixA.transpose()) * eigenMatrixB) + beta * eigenMatrixC;
+				}
+				else if(transA==0 && transB==1){
+					eResult = alpha*(eigenMatrixA * (eigenMatrixB.transpose())) + beta * eigenMatrixC;
+				}
+				else if(transA==1 && transB==1){
+					eResult = alpha*((eigenMatrixA.transpose()) * (eigenMatrixB.transpose())) + beta * eigenMatrixC;
+				}
+			}
 			catch (...){
-				std::cout<< "tensor dimenions not appropriate for Gemm operator." << std::endl; 
+				throw std::invalid_argument("tensor dimenions not appropriate for Gemm operator."); 
 			}	
 		result.load( eResult.data() ); 
 		return result;

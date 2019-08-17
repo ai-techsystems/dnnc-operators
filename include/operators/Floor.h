@@ -31,7 +31,7 @@ namespace dnnc {
 template <typename T> class Floor : public baseOperator<T> {
 public:
   Floor(std::string name = "opFloor")
-      : baseOperator<T>(opFloor, name, attrs) {}
+      : baseOperator<T>(opFloor, name) {}
 
 	  // NOT GOOD to return by value
       tensor<T> 

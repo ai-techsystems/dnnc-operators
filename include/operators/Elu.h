@@ -29,10 +29,11 @@ using namespace Eigen;
 
 namespace dnnc {
 template <typename T> class Elu : public baseOperator<T> {
+protected:	
 	float alpha = 1.0;
 public:
   Elu(std::string name = "opElu")
-      : baseOperator<T>(opElu, name, attrs) {}
+      : baseOperator<T>(opElu, name) {}
 
       bool getAttribute(OPATTR attrName, float &obj) {
 	    if (attrName == attr_alpha) {
@@ -40,6 +41,11 @@ public:
 	      return true;
 	    }
 	    return false;
+	  }
+	  void setAttribute(OPATTR attrName, float &obj) {
+	    if (attrName == attr_alpha) {
+	      alpha = obj;
+	    }
 	  }
   tensor<T> 
       compute(tensor<T>& input )
@@ -49,7 +55,11 @@ public:
 		  
 		tensor<T> result(input.shape(), input.name());
 	    for (size_t i = 0; i < input.length(); i++)
-		      result[i] = input[i] > alpha ? input[i] : 0.0;
+	    	/*
+	    	f(x) = alpha * (exp(x) - 1.) for x < 0
+	    		   x for x >= 0
+	    	*/
+		      result[i] = (input[i] < 0) ? (alpha * (exp(input[i]) - 1.)) : input[i];
 
 		  return result;
 	  }

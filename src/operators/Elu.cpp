@@ -30,11 +30,12 @@ using namespace Eigen;
 #include <iostream>
 int main() {
 	float d1[6] = {-1., -2., -3., 1., 2., 3.};
-	tensor<float> a(1,6); a.load(d1);
+	tensor<float> a(6); a.load(d1);
 	float alpha = 2.0;
 
-	Elu<float> m("localOpName", 0x0);
-	auto result = m.compute(a, alpha);
+	Elu<float> m("localOpName");
+	m.setAttribute(attr_alpha,alpha);
+	auto result = m.compute(a);
 
 	std::cout << result ;
 	std::cout << "\n" ;

@@ -32,7 +32,7 @@ int main() {
 	float d1[6] = {1.2, 2.5, 3.7, 4., 5.1, 6.9};
 	tensor<float> a(2,3); a.load(d1);
 
-	Floor<float> m("localOpName", 0x0);
+	Floor<float> m("localOpName");
 	auto result = m.compute(a);
 
 	std::cout << result ;

@@ -29,15 +29,49 @@ using namespace Eigen;
 
 namespace dnnc {
 template <typename T> class Flatten : public baseOperator<T> {
+protected:
+	int axis = 1;
   //  Flatten attributes
 public:
   Flatten(std::string name = "opFlatten") : baseOperator<T>(opFlatten, name) {}
 
-  // bool getAttribute<int>(OPATTR attrName, int& obj) ;
-
-  void compute(void) {
-    // CHANGE return-type and args
-    // AND ADD YOUR FUNCTIONAL CODE HERE
-  }
+  bool getAttribute(OPATTR attrName, int &obj) {
+	    if (attrName == attr_axis) {
+	      obj = axis;
+	      return true;
+	    }
+	    return false;
+	  }
+	void setAttribute(OPATTR attrName, int &obj) {
+	    if (attrName == attr_axis) {
+	      axis = obj;
+	    }
+	  }
+  
+  tensor<T> 
+      compute(tensor<T>& a)
+	  {		
+		  if (a.rank() < (size_t)axis)
+			  throw std::invalid_argument("tensor rank or axis not appropriate for Flatten operator."); 
+		  
+		  size_t row = 1;
+		  size_t col = 1;
+		  size_t i;
+		  
+		  for (i=0;i<(size_t)axis;i++){
+		  	row*=a.shape()[i];
+		  }
+		  for (i=axis;i<(size_t)a.rank();i++){
+		  	col*=a.shape()[i];
+		  }
+		  // std::cout<<a.shape()[0]<<" , "<<a.shape()[1]<<" , "<<a.shape()[2]<<" , "<<a.shape()[3]<<std::endl;
+		  
+		  std::vector<size_t> two_dimension {row,col};
+		  a.reshape(two_dimension);
+		  tensor<T> result = a;
+		  // std::cout<<result.shape()[0]<<" , "<<result.shape()[1]<<std::endl;
+		  
+		  return result;
+	  }
 };
 } // namespace dnnc

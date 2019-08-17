@@ -33,8 +33,9 @@ int main() {
 	tensor<float> a(3,3); a.load(d1);
 	int k = -1;
 
-	EyeLike<float> m("localOpName", 0x0);
-	auto result = m.compute(a, k);
+	EyeLike<float> m("localOpName");
+	m.setAttribute(attr_k,k);
+	auto result = m.compute(a);
 
 	std::cout << result ;
 	std::cout << "\n" ;

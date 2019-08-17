@@ -31,7 +31,7 @@ namespace dnnc {
 template <typename T> class Equal : public baseOperator<T> {
 public:
   Equal(std::string name = "opEqual")
-      : baseOperator<T>(opEqual, name, attrs) {}
+      : baseOperator<T>(opEqual, name) {}
 
   tensor<T> 
       compute(tensor<T>& a, tensor<T>& b)

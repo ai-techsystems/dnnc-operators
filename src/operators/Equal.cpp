@@ -34,7 +34,7 @@ int main() {
 	tensor<float> a(2,3); a.load(d1);
 	tensor<float> b(2,3); b.load(d2);
 
-	Equal<float> m("localOpName", 0x0);
+	Equal<float> m("localOpName");
 	auto result = m.compute(a, b);
 
 	std::cout << result ;

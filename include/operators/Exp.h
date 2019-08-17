@@ -31,7 +31,7 @@ namespace dnnc {
 template <typename T> class Exp : public baseOperator<T> {
 public:
   Exp(std::string name = "opExp")
-      : baseOperator<T>(opExp, name, attrs) {}
+      : baseOperator<T>(opExp, name) {}
 
   tensor<T> 
       compute(tensor<T>& a){

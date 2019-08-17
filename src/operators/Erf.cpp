@@ -32,7 +32,7 @@ int main() {
 	float d1[6] = {0., 1., 2., 3., 9., 99.};
 	tensor<float> a(2,3); a.load(d1);
 
-	Erf<float> m("localOpName", 0x0);
+	Erf<float> m("localOpName");
 	auto result = m.compute(a);
 
 	std::cout << result ;

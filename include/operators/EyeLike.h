@@ -29,16 +29,23 @@ using namespace Eigen;
 
 namespace dnnc {
 template <typename T> class EyeLike : public baseOperator<T> {
+protected:
+	int k = 0;
 public:
   EyeLike(std::string name = "opEyeLike")
-      : baseOperator<T>(opEyeLike, name, attrs) {}
-	int k = 0;
+      : baseOperator<T>(opEyeLike, name) {}
+
 	bool getAttribute(OPATTR attrName, int &obj) {
 	    if (attrName == attr_k) {
 	      obj = k;
 	      return true;
 	    }
 	    return false;
+	  }
+	void setAttribute(OPATTR attrName, int &obj) {
+	    if (attrName == attr_k) {
+	      k = obj;
+	    }
 	  }
   
   tensor<T> 
@@ -49,7 +56,6 @@ public:
 		  
 		  int row = a.shape()[0];
 		  int col = a.shape()[1];
-		  
 		  tensor<T> result(row, col);
 		  
 		  DNNC_EIGEN_MATRIX(eigenMatrixA, a) ; 

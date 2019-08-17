@@ -255,8 +255,8 @@ enum OPATTR {
   attr_then_branch,
   attr_time_axis,
   attr_to,
-  attr_transa,
-  attr_transb,
+  attr_transA,
+  attr_transB,
   attr_value,
   attr_weights
 };
