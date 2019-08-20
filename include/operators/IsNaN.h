@@ -49,11 +49,16 @@ public:
       {
       if(!compare() )
           throw std::invalid_argument("Constrain input and output types to float tensors.");
+      //Reshaping to 1D
+      std::vector<size_t> shape{a.length()};
       tensor<bool> result(a.shape(),a.name());
-      for(size_t i=0;i< a.length();i++)
-      {
-        result[i]=Is_NAN(a[i]);
-      }
+      a.reshape(shape);
+
+      DNNC_EIGEN_VECTOR(eigenVector,a);
+      Matrix<bool,1, Dynamic> eResult;
+      eResult.array() = eigenVector.array().isNaN();
+
+      result.load(eResult.data());
       return result;
     }
  };

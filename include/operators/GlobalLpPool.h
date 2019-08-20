@@ -29,10 +29,13 @@ using namespace Eigen;
 
 namespace dnnc {
 template <typename T> class GlobalLpPool : public baseOperator<T> {
+protected:
+  int p = 2;
 public:
-  GlobalLpPool(std::string name = "opGlobalLpPool")
-      : baseOperator<T>(opGlobalLpPool, name) {}
-      int p = 2;
+  GlobalLpPool(std::string name = "opGlobalLpPool",int p = 2)
+      : baseOperator<T>(opGlobalLpPool, name) {
+        this->p = p;
+      }
       bool getAttribute(OPATTR attrName,int& obj)
       {
         if (attrName == attr_p) {
@@ -63,7 +66,7 @@ public:
         }
         std::vector<size_t> shape{a.shape()[0],a.shape()[1],axis_left};
         a.reshape(shape);
-        
+
         int cummulation = axis_left;
         tensor<T> result(a.shape()[0],a.shape()[1]);
         int j = 0;

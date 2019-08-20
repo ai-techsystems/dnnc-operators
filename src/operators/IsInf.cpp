@@ -37,9 +37,7 @@ int main() {
 	int detect_positive = 1;
 	int detect_negative = 0;
   std::cout << a <<"\n" ;
-	IsInf<float> m("localOpName");
-	m.getAttribute(attr_detect_positive,detect_positive);
-	m.getAttribute(attr_detect_negative,detect_negative);
+	IsInf<float> m("localOpName",detect_positive,detect_negative);
 	auto result = m.compute(a);
 
 	std::cout << result ;

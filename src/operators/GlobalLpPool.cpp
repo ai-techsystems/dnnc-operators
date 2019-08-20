@@ -31,10 +31,10 @@ using namespace Eigen;
 #include <iostream>
 int main() {
   float d1[16] = {12, -2, 3, 4, 5, 6,1,1,2,3,4,5,3,2,4,5};
-  tensor<float> a(2,2,2,2); a.load(d1);
-  GlobalLpPool<float> m("localOpName");
-  int p = 2;
-  m.setAttribute(attr_p,p);
+  tensor<float> a(2,2,4); a.load(d1);
+  int p = 1;
+  GlobalLpPool<float> m("localOpName",p);
+  std::cout <<a << "\n" ;
   auto result = m.compute(a);
 
   std::cout << result ;

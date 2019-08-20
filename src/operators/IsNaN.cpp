@@ -31,9 +31,10 @@ using namespace Eigen;
 
 
 int main() {
-	float d1[6] = {1.1, -2., 3., 4., 5., 6.};
-	tensor<float> a(2	,3); a.load(d1);
-  a(1,2) = NAN;
+	float d1[12] = {1.1, -2., 3., 4., 5., 6.,1.1, -2., 3., 4., 5., 6.};
+	tensor<float> a(2	,3,2); a.load(d1);
+  a(1,2,1) = NAN;
+	a(1,0,1) = NAN;
   std::cout << a <<"\n" ;
 	IsNaN<float> m("localOpName");
 	auto result = m.compute(a);

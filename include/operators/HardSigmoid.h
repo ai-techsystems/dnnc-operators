@@ -29,15 +29,19 @@ using namespace Eigen;
 
 namespace dnnc {
 template <typename T> class HardSigmoid : public baseOperator<T> {
+protected:
+  float alpha = 0.2;
+  float beta = 0.5;
 public:
-  HardSigmoid(std::string name = "opHardSigmoid")
-      : baseOperator<T>(opHardSigmoid, name) {}
+  HardSigmoid(std::string name = "opHardSigmoid",float alpha = 0.2,float beta = 0.5)
+      : baseOperator<T>(opHardSigmoid, name) {
+        this->alpha = alpha;
+        this->beta = beta;
+      }
       static bool compare()
       {
         return ( (typeid(T) == typeid(float))||(typeid(T) == typeid(double)) );
       }
-      float alpha = 0.2;
-      float beta = 0.5;
       bool getAttribute(OPATTR attrName, float &obj)
       {
         if (attrName == attr_alpha) {
@@ -50,16 +54,6 @@ public:
         }
         return false;
       }
-      void setAttribute(OPATTR attrName, float &obj)
-      {
-        if (attrName == attr_alpha) {
-          alpha = obj;
-        }
-        else if (attrName == attr_beta){
-          beta = obj;
-        }
-      }
-      
       static T Hard_Sigmoid(T x,float alpha,float beta)
       {
         T temp=T(alpha * x + beta);
