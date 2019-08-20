@@ -5,40 +5,40 @@
 
 ```python
 
-a = numpy.array([1,2,3])
+✔️a = numpy.array([1,2,3])
 
-numpy.array([1,2]) #1D
-numpy.array([[1,2],[10,20]]) #2D
+✔️numpy.array([1,2]) #1D
+✔️numpy.array([[1,2],[10,20]]) #2D
 
 # For complex types
-numpy.array([1,2], dtype=complex) #1D complex
+✔️numpy.array([1,2], dtype=complex) #1D complex
 
 # For randomized 3d array
-Array3d = numpy.random.randint(10, size=(3, 4, 5))
+🚫Array3d = numpy.random.randint(10, size=(3, 4, 5))
 
 # generate uniformly distributed numbers
-a = numpy.random.rand(3,2)   #(3 rows, 2 cols)
+🚫a = numpy.random.rand(3,2)   #(3 rows, 2 cols)
 
 # Create empty 2D array (2 rows, 3 columns)
-a_empty = numpy.empty(2,3)
+✔️a_empty = numpy.empty(2,3)
 
 # Create 0 initiallized 2D array (3 rows, 2 columns)
-numpy.zeros(3,2) 
+✔️numpy.zeros(3,2) 
 
 # Create 1 initiallized 2D array (3 rows, 2 columns)
-numpy.ones(3,2) 
+✔️numpy.ones(3,2) 
 
 # Create a range of elements
-array = numpy.arange(3) # array will contain 0,1,2
+✔️array = numpy.arange(3) # array will contain 0,1,2
 
 # Create a Numpy array from Python sequence of elements
-a = numpy.asarray([1,2])
+✔️a = numpy.asarray([1,2])
 
 # Create an array with values that are evenly spaced
-a = numpy.array(0,6,2) # create 0-5, 2 apart, returns [0,2,4]
+✔️a = numpy.array(0,6,2) # create 0-5, 2 apart, returns [0,2,4]
 
 # Ccreate an array where the values are linearly spaced between an interval    numpy.linspace(first, last, number)
-a = numpy.linspace(0,10,5) # returns [0,2.5,5,7.5,10]
+✔️a = numpy.linspace(0,10,5) # returns [0,2.5,5,7.5,10]
 
 ```
 ---
