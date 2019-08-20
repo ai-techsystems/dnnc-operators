@@ -1,10 +1,11 @@
 # dnnc-operators
 Development and discussion of DNNC operators.  
 
-To get started on development, see this **[Developer's getting started guide](https://github.com/ai-techsystems/dnnc-operators/blob/master/docs/DeveloperGettingStartedGuide.md)**.  
+* To get started on development, see this **[Developer's getting started guide](https://github.com/ai-techsystems/dnnc-operators/blob/master/docs/DeveloperGettingStartedGuide.md)**.  
 
+* To get an idea of how to implement numpy like interface with dnnc see **[dnnc Tensor Functions](docs/dnncTensorFunctions.md)**.  
 
-To refer back to the original Readme **[click here](https://github.com/ai-techsystems/dnnCompiler/blob/master/README.md)**.  
+* To refer back to the original Readme **[click here](https://github.com/ai-techsystems/dnnCompiler/blob/master/README.md)**.  
 
 
 #### Below is the list of current ongoing operators list (Under Construction)
