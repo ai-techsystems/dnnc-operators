@@ -11,7 +11,7 @@
 ✔️numpy.array([[1,2],[10,20]]) #2D
 
 # For complex types
-✔️numpy.array([1,2], dtype=complex) #1D complex
+🚫numpy.array([1,2], dtype=complex) #1D complex
 
 # For randomized 3d array
 🚫Array3d = numpy.random.randint(10, size=(3, 4, 5))
