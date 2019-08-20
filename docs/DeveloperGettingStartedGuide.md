@@ -11,6 +11,8 @@
 
 * Here is a **[Tutorial](https://dritchie.github.io/csci2240/assignments/eigen_tutorial.pdf)** for eigen library.  
 
+* Here is more **[indepth discussion of philosophy and features of Eigen](http://downloads.tuxfamily.org/eigen/eigen_CGLibs_Giugno_Pisa_2013.pdf)**
+
 * Also check out **[Eigen documentation](http://eigen.tuxfamily.org/dox/.)**
 ---
 

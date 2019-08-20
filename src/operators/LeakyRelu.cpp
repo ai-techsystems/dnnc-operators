@@ -35,8 +35,9 @@ int main() {
 	tensor<double> a(2,3); a.load(d1);
 	//tensor<float> b(3,2); b.load(d2);
   float alpha=0.3;
-	LeakyRelu<double> m("localOpName");
-	m.getAttribute(attr_alpha,alpha);
+	std::cout << a ;
+	std::cout << "\n" ;
+	LeakyRelu<double> m("localOpName",alpha);
 	auto result = m.compute(a);
 
 	std::cout << result ;

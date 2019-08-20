@@ -35,9 +35,8 @@ int main() {
 	//tensor<float> b(3,2); b.load(d2);
   float alpha=0.2;
   float beta=0.2;
-	HardSigmoid<float> m("localOpName");
-	m.setAttribute(attr_alpha,alpha);
-	//m.getAttribute(attr_beta,beta);
+	HardSigmoid<float> m("localOpName",alpha,beta);
+	std::cout <<a << "\n" ;
 	auto result = m.compute(a);
 
 	std::cout << result ;

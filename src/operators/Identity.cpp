@@ -34,7 +34,7 @@ int main() {
 	tensor<float> a(2,2,2); a.load(d1);
 	//tensor<float> b(3,2); b.load(d2);
 
-	Identity<float> m("localOpName", 0x0);
+	Identity<float> m("localOpName");
 	auto result = m.compute(a);
 
 	std::cout << result ;

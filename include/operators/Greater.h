@@ -40,11 +40,17 @@ public:
     {
       if (a.shape() != b.shape())
         throw std::invalid_argument("tensor dimenions not appropriate for Greater operator.");
+      //Reshaping to 1D
+      std::vector<size_t> shape{a.length()};
       tensor<bool> result(a.shape(),a.name());
-      for(size_t i=0;i< a.length();i++)
-      {
-        result[i]=comp(a[i],b[i]);
-      }
+      a.reshape(shape);
+      b.reshape(shape);
+
+      DNNC_EIGEN_VECTOR(eigenVectorA,a);
+      DNNC_EIGEN_VECTOR(eigenVectorB,b);
+      Matrix<bool,1, Dynamic> eResult;
+      eResult.array() = eigenVectorA.array() > eigenVectorB.array() ;
+      result.load(eResult.data());
       return result;
     }
   };

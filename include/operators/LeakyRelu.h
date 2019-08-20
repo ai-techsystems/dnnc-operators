@@ -29,10 +29,13 @@ using namespace Eigen;
 
 namespace dnnc {
 template <typename T> class LeakyRelu : public baseOperator<T> {
+protected:
+  float alpha = 0.01;
 public:
-  LeakyRelu(std::string name = "opLeakyRelu")
-      : baseOperator<T>(opLeakyRelu, name) {}
-      float alpha = 0.01;
+  LeakyRelu(std::string name = "opLeakyRelu",float alpha = 0.01)
+      : baseOperator<T>(opLeakyRelu, name) {
+        this-> alpha = alpha;
+      }
       bool getAttribute(OPATTR attrName,float &obj)
       {
         if (attrName == attr_alpha){
@@ -40,12 +43,6 @@ public:
           return true;
         }
         return false;
-      }
-      void setAttribute(OPATTR attrName,float &obj)
-      {
-        if (attrName == attr_alpha){
-          alpha = obj;
-        }
       }
       static bool compare()
       {
@@ -63,13 +60,16 @@ public:
       {
       if(!compare() )
           throw std::invalid_argument("Constrain input and output types to float tensors.");
-      tensor<T> result(a.shape(),a.name());
       //f(x) = alpha * x for x < 0, f(x) = x for x >= 0
+      std::vector<size_t> shape{a.length()};
+      tensor<T> result(a.shape(),a.name());
+      a.reshape(shape);
+      DNNC_EIGEN_VECTOR(eigenVector,a);
+      Matrix<T,1, Dynamic> eResult;
       auto c0 = std::bind(Leaky_Relu, std::placeholders::_1, alpha);
-      for(size_t i=0;i< a.length();i++)
-      {
-        result[i]=c0(a[i]);
-      }
+      eResult.array() = eigenVector.array().unaryExpr(c0);
+
+      result.load(eResult.data());
       return result;
       }
 };

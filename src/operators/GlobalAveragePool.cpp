@@ -34,7 +34,7 @@ int main() {
   	tensor<float> a(2,2,2,2); a.load(d1);
   	GlobalAveragePool<float> m("localOpName");
   	auto result = m.compute(a);
-
+    std::cout <<a << "\n" ;
   	std::cout << result ;
   	std::cout << "\n" ;
 

@@ -29,13 +29,15 @@ using namespace Eigen;
 
 namespace dnnc {
 template <typename T> class IsInf : public baseOperator<T> {
+protected:
+  int detect_negative = 1;
+  int detect_positive = 1;
 public:
-  IsInf(std::string name = "opIsInf")
-      : baseOperator<T>(opIsInf, name) {}
-
-      int detect_negative = 1;
-      int detect_positive = 1;
-
+  IsInf(std::string name = "opIsInf",int detect_positive = 1,int detect_negative = 1 )
+      : baseOperator<T>(opIsInf, name) {
+        this-> detect_positive = detect_positive;
+        this-> detect_negative = detect_negative;
+      }
       bool getAttribute(OPATTR attrName, int &obj)
       {
         if (attrName == attr_detect_positive) {
@@ -47,16 +49,6 @@ public:
           return true;
         }
         return false;
-      }
-
-      void setAttribute(OPATTR attrName, int &obj)
-      {
-        if (attrName == attr_detect_positive) {
-          detect_positive = obj;
-        }
-        else if(attrName == attr_detect_negative) {
-          detect_negative = obj;
-        }
       }
 
       static bool compare()

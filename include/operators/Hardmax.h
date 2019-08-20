@@ -29,11 +29,13 @@ using namespace Eigen;
 
 namespace dnnc {
 template <typename T> class Hardmax : public baseOperator<T> {
+protected:
+  int axis = 0;
 public:
-  Hardmax(std::string name = "opHardmax")
-      : baseOperator<T>(opHardmax, name) {}
-      int axis = 0;
-
+  Hardmax(std::string name = "opHardmax",int axis = 0)
+      : baseOperator<T>(opHardmax, name) {
+        this->axis = axis;
+      }
       bool getAttribute(OPATTR attrName, int &obj)
       {
         if (attrName == attr_axis) {
@@ -41,12 +43,6 @@ public:
           return true;
         }
         return false;
-      }
-      void setAttribute(OPATTR attrName, int &obj)
-      {
-        if (attrName == attr_axis) {
-          axis = obj;
-        }
       }
       static bool compare()
       {
@@ -58,6 +54,7 @@ public:
 
       if(!compare() )
           throw std::invalid_argument("Constrain input and output types to float tensors.");
+      std::vector<size_t> original_shape = a.shape();
       //Reshaping the tensor to 2D.
       size_t axis1=1;
       size_t axis2=1;
@@ -70,6 +67,7 @@ public:
       axis2 = a.length()/axis1;
       std::vector<size_t> shape{axis1,axis2};
       a.reshape(shape);
+      std::cout<<a << "\n" ;
       tensor<T> result(a.shape()[0], a.shape()[1]);
 
       Eigen::MatrixXf::Index max_index;
@@ -90,7 +88,8 @@ public:
       Matrix<T, Dynamic, Dynamic> eResult = eigenMatrix1 ;
 
       result.load( eResult.data() );
-
+      std::cout <<result<< std::endl;
+      result.reshape(original_shape);
       return result;
       }
     };

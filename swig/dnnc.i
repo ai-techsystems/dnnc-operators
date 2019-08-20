@@ -32,14 +32,14 @@
  }
  catch (const std::runtime_error& e) {
    SWIG_exception(SWIG_RuntimeError, e.what());
- } 
+ }
  catch (const std::invalid_argument& e) {
    SWIG_exception(SWIG_ValueError, e.what());
  }
  catch (const std::out_of_range& e) {
    SWIG_exception(SWIG_IndexError, e.what());
  }
- catch (...) { 
+ catch (...) {
    SWIG_exception(SWIG_RuntimeError, "unknown exception");
  }
 }
@@ -56,6 +56,7 @@ typedef long unsigned int size_t;
 %}
 namespace std {
   %template(ivec) vector<size_t>;
+  %template(fvec) vector<float>;
 }
 %{
 #include <core/tensor.h>
@@ -68,13 +69,35 @@ extern dnnc::tensor<float>  \
         add(dnnc::tensor<float>& a, dnnc::tensor<float>& b) ;
 extern dnnc::tensor<float>  \
         thresholded_relu(dnnc::tensor<float>& input);
+extern dnnc::tensor<float>  \
+        global_average_pool(dnnc::tensor<float>& input);
+extern dnnc::tensor<float>  \
+        global_lp_pool(dnnc::tensor<float>& input,int p=2);
+extern dnnc::tensor<float>  \
+        global_max_pool(dnnc::tensor<float>& a);
+extern dnnc::tensor<bool>  \
+        greater(dnnc::tensor<float>& a,dnnc::tensor<float>& b);
+extern dnnc::tensor<float>  \
+        hardmax(dnnc::tensor<float>& a,int axis=0);
+extern dnnc::tensor<float>  \
+        hardsigmoid(dnnc::tensor<float>& a,float alpha=0.2,float beta=0.5);
+extern dnnc::tensor<float>  \
+        identity(dnnc::tensor<float>& a);
+extern dnnc::tensor<bool>  \
+        isinf(dnnc::tensor<float>& a,int detect_positive=1,int detect_negative=1);
+extern dnnc::tensor<bool>  \
+        isnan(dnnc::tensor<float>& a);
+extern dnnc::tensor<float>  \
+        leakyrelu(dnnc::tensor<float>& a,float alpha=0.01);
+extern dnnc::tensor<float>  \
+        instancenormalization(dnnc::tensor<float>& input,dnnc::tensor<float>& scale,dnnc::tensor<float>& B,float epsilon=1e-5);
 %}
 %template(iTensor) dnnc::tensor<int>;
 %template(fTensor) dnnc::tensor<float>;
 %template(dTensor) dnnc::tensor<double>;
 
 extern dnnc::tensor<float>
-        make_tensor(size_t x,     size_t y = 0, 
+        make_tensor(size_t x,     size_t y = 0,
                     size_t z = 0, size_t w = 0) ;
 extern dnnc::tensor<float>  \
         multiply(dnnc::tensor<float>& a, dnnc::tensor<float>& b) ;
@@ -82,3 +105,25 @@ extern dnnc::tensor<float>  \
         add(dnnc::tensor<float>& a, dnnc::tensor<float>& b) ;
 extern dnnc::tensor<float>  \
         thresholded_relu(dnnc::tensor<float>& input);
+extern dnnc::tensor<float>  \
+        global_average_pool(dnnc::tensor<float>& input);
+extern dnnc::tensor<float>  \
+        global_lp_pool(dnnc::tensor<float>& input,int p=2);
+extern dnnc::tensor<float>  \
+        global_max_pool(dnnc::tensor<float>& a);
+extern dnnc::tensor<bool>  \
+        greater(dnnc::tensor<float>& a,dnnc::tensor<float>& b);
+extern dnnc::tensor<float>  \
+        hardmax(dnnc::tensor<float>& a,int axis=0);
+extern dnnc::tensor<float>  \
+        hardsigmoid(dnnc::tensor<float>& a,float alpha=0.2,float beta=0.5);
+extern dnnc::tensor<float>  \
+        identity(dnnc::tensor<float>& a);
+extern dnnc::tensor<bool>  \
+        isinf(dnnc::tensor<float>& a,int detect_positive=1,int detect_negative=1);
+extern dnnc::tensor<bool>  \
+        isnan(dnnc::tensor<float>& a);
+extern dnnc::tensor<float>  \
+        leakyrelu(dnnc::tensor<float>& a,float alpha=0.01);
+extern dnnc::tensor<float>  \
+        instancenormalization(dnnc::tensor<float>& input,dnnc::tensor<float>& scale,dnnc::tensor<float>& B,float epsilon=1e-5);
