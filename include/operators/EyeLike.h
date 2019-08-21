@@ -32,8 +32,10 @@ template <typename T> class EyeLike : public baseOperator<T> {
 protected:
 	int k = 0;
 public:
-  EyeLike(std::string name = "opEyeLike")
-      : baseOperator<T>(opEyeLike, name) {}
+  EyeLike(std::string name = "opEyeLike", int k = 0)
+      : baseOperator<T>(opEyeLike, name) {
+      	this->k = k;
+      }
 
 	bool getAttribute(OPATTR attrName, int &obj) {
 	    if (attrName == attr_k) {
@@ -41,11 +43,6 @@ public:
 	      return true;
 	    }
 	    return false;
-	  }
-	void setAttribute(OPATTR attrName, int &obj) {
-	    if (attrName == attr_k) {
-	      k = obj;
-	    }
 	  }
   
   tensor<T> 

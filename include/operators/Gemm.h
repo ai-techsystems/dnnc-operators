@@ -36,8 +36,13 @@ protected:
 	int transB = 0;
 
 public:
-  Gemm(std::string name = "opGemm")
-      : baseOperator<T>(opGemm, name) {}
+  Gemm(std::string name = "opGemm", float alpha = 1.0, float beta = 1.0, int transA = 0, int transB = 0)
+      : baseOperator<T>(opGemm, name) {
+      	this->alpha = alpha;
+      	this->beta = beta;
+      	this->transA = transA;
+      	this->transB = transB;
+      }
      
      bool getAttribute(OPATTR attrName, int &obj) {
 	    if (attrName == attr_transA) {
@@ -60,23 +65,6 @@ public:
 	      return true;
 	    }
 	    return false;
-	  }
-
-	  void setAttribute(OPATTR attrName, int &obj) {
-	    if (attrName == attr_transA) {
-	      transA = obj;
-	    }
-	    else if (attrName == attr_transB) {
-	      transB = obj;
-	    }
-	  }
-     void setAttribute(OPATTR attrName, float&obj) {
-	    if (attrName == attr_alpha) {
-	      alpha = obj;
-	    }
-	    else if (attrName == attr_beta) {
-	      beta = obj;
-	    }
 	  }
 
      tensor<T> 

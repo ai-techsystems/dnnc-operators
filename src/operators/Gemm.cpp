@@ -40,11 +40,7 @@ int main() {
 	int transA = 1;
 	int transB = 1;
 	
-	Gemm<float> m("localOpName");
-	m.setAttribute(attr_alpha,alpha);
-	m.setAttribute(attr_beta,beta);
-	m.setAttribute(attr_transA,transA);
-	m.setAttribute(attr_transB,transB);
+	Gemm<float> m("localOpName", alpha, beta, transA, transB);
 	
 	auto result = m.compute(a, b, c);
 

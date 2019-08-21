@@ -33,8 +33,7 @@ int main() {
 	tensor<float> a(6); a.load(d1);
 	float alpha = 2.0;
 
-	Elu<float> m("localOpName");
-	m.setAttribute(attr_alpha,alpha);
+	Elu<float> m("localOpName",alpha);
 	auto result = m.compute(a);
 
 	std::cout << result ;

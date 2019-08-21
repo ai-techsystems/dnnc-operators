@@ -33,7 +33,10 @@ protected:
 	int axis = 1;
   //  Flatten attributes
 public:
-  Flatten(std::string name = "opFlatten") : baseOperator<T>(opFlatten, name) {}
+  Flatten(std::string name = "opFlatten", int axis = 1) 
+  : baseOperator<T>(opFlatten, name) {
+  	this->axis = axis;
+  }
 
   bool getAttribute(OPATTR attrName, int &obj) {
 	    if (attrName == attr_axis) {
@@ -41,11 +44,6 @@ public:
 	      return true;
 	    }
 	    return false;
-	  }
-	void setAttribute(OPATTR attrName, int &obj) {
-	    if (attrName == attr_axis) {
-	      axis = obj;
-	    }
 	  }
   
   tensor<T> 
