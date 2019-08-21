@@ -32,19 +32,27 @@
  }
  catch (const std::runtime_error& e) {
    SWIG_exception(SWIG_RuntimeError, e.what());
- }
+ } 
  catch (const std::invalid_argument& e) {
    SWIG_exception(SWIG_ValueError, e.what());
  }
  catch (const std::out_of_range& e) {
    SWIG_exception(SWIG_IndexError, e.what());
  }
- catch (...) {
+ catch (const std::logic_error& e) {
+   SWIG_exception(SWIG_IndexError, e.what());
+ }
+ catch (const std::bad_alloc& e) {
+   PyErr_NoMemory();
+   SWIG_exception(SWIG_MemoryError, e.what());
+ }
+ catch (...) { 
    SWIG_exception(SWIG_RuntimeError, "unknown exception");
  }
 }
 
 %module dnnc
+%include "typemaps.i"
 %include <std_string.i>
 %include <std_vector.i>
 %include <std_shared_ptr.i>
@@ -91,13 +99,19 @@ extern dnnc::tensor<float>  \
         leakyrelu(dnnc::tensor<float>& a,float alpha=0.01);
 extern dnnc::tensor<float>  \
         instancenormalization(dnnc::tensor<float>& input,dnnc::tensor<float>& scale,dnnc::tensor<float>& B,float epsilon=1e-5);
+extern dnnc::tensor<float> array(PyObject*);
+extern dnnc::tensor<float> arange(size_t stop, size_t start=0, size_t step=1);
+extern dnnc::tensor<float> empty(size_t x, size_t y = 0, size_t z = 0, size_t w = 0);
+extern dnnc::tensor<float> zeros(size_t x, size_t y = 0, size_t z = 0, size_t w = 0);
+extern dnnc::tensor<float> ones(size_t x, size_t y = 0, size_t z = 0, size_t w = 0);
+extern dnnc::tensor<float> random(size_t x, size_t y = 0, size_t z = 0, size_t w = 0);
 %}
 %template(iTensor) dnnc::tensor<int>;
 %template(fTensor) dnnc::tensor<float>;
 %template(dTensor) dnnc::tensor<double>;
 
 extern dnnc::tensor<float>
-        make_tensor(size_t x,     size_t y = 0,
+        make_tensor(size_t x,     size_t y = 0, 
                     size_t z = 0, size_t w = 0) ;
 extern dnnc::tensor<float>  \
         multiply(dnnc::tensor<float>& a, dnnc::tensor<float>& b) ;
@@ -127,3 +141,9 @@ extern dnnc::tensor<float>  \
         leakyrelu(dnnc::tensor<float>& a,float alpha=0.01);
 extern dnnc::tensor<float>  \
         instancenormalization(dnnc::tensor<float>& input,dnnc::tensor<float>& scale,dnnc::tensor<float>& B,float epsilon=1e-5);
+extern dnnc::tensor<float> array(PyObject* objects);
+extern dnnc::tensor<float> arange(size_t stop, size_t start=0, size_t step=1);
+extern dnnc::tensor<float> empty(size_t x, size_t y = 0, size_t z = 0, size_t w = 0);
+extern dnnc::tensor<float> zeros(size_t x, size_t y = 0, size_t z = 0, size_t w = 0);
+extern dnnc::tensor<float> ones(size_t x, size_t y = 0, size_t z = 0, size_t w = 0);
+extern dnnc::tensor<float> random(size_t x, size_t y = 0, size_t z = 0, size_t w = 0);

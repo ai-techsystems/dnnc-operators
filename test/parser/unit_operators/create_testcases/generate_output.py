@@ -1,3 +1,4 @@
+import os
 separator = os.path.sep
 
 def create_testcase (op_name, inputs, outputs, nodes, declarations):
