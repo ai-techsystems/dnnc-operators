@@ -120,6 +120,21 @@ extern dnnc::tensor<float>  \
         multiply(dnnc::tensor<float>& a, dnnc::tensor<float>& b) ;
 extern dnnc::tensor<float>  \
         thresholded_relu(dnnc::tensor<float>& input);
+extern dnnc::tensor<bool>  \
+        less(dnnc::tensor<float>& a, dnnc::tensor<float>& b);
+extern dnnc::tensor<float>  \
+        log(dnnc::tensor<float>& a); 
+extern dnnc::tensor<float>  \
+        logsoftmax(dnnc::tensor<float>& input,int axis=1); 
+extern dnnc::tensor<float>  \
+        lpnormalization(dnnc::tensor<float>& input,int axis=1,int p=2);
+extern dnnc::tensor<int>  \
+        matmulinteger(dnnc::tensor<int>& a, dnnc::tensor<int>& b) ;
+extern dnnc::tensor<float>  \
+        mean(std::vector<tensor<float>> inputs) ;
+extern dnnc::tensor<float>  \
+        min(std::vector<tensor<float>> inputs) ;
+
 extern dnnc::tensor<float> array(PyObject*);
 extern dnnc::tensor<float> arange(size_t stop, size_t start=0, size_t step=1);
 extern dnnc::tensor<float> empty(size_t x, size_t y = 0, size_t z = 0, size_t w = 0);
@@ -183,6 +198,21 @@ extern dnnc::tensor<float>  \
         multiply(dnnc::tensor<float>& a, dnnc::tensor<float>& b) ;
 extern dnnc::tensor<float>  \
         thresholded_relu(dnnc::tensor<float>& input);
+extern dnnc::tensor<bool>  \
+        less(dnnc::tensor<float>& a, dnnc::tensor<float>& b);
+extern dnnc::tensor<float>  \
+        log(dnnc::tensor<float>& a); 
+extern dnnc::tensor<float>  \
+        logsoftmax(dnnc::tensor<float>& input,int axis=1); 
+extern dnnc::tensor<float>  \
+        lpnormalization(dnnc::tensor<float>& input,int axis=1,int p=2);
+extern dnnc::tensor<int>  \
+        multiply(dnnc::tensor<int>& a, dnnc::tensor<int>& b);
+extern dnnc::tensor<float>  \
+        mean(std::vector<tensor<float>> inputs);
+extern dnnc::tensor<float>  \
+        min(std::vector<tensor<float>> inputs);
+
 extern dnnc::tensor<float> array(PyObject* objects);
 extern dnnc::tensor<float> arange(size_t stop, size_t start=0, size_t step=1);
 extern dnnc::tensor<float> empty(size_t x, size_t y = 0, size_t z = 0, size_t w = 0);

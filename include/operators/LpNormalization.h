@@ -31,7 +31,10 @@ using namespace Eigen;
 namespace dnnc {
 template <typename T> class LpNormalization : public baseOperator<T> {
   //  LpNormalization attributes
-  // default
+
+  //since axis is int it can be 0 or 1
+  //only L1 norm and L2 norm is supported to normalize(https://en.wikipedia.org/wiki/Norm_(mathematics))
+  //Eigen cwise unsupported-tensors(written TODO in original doc)
 protected:
    int p=2;int axis=1;
 
@@ -74,14 +77,16 @@ public:
      tensor<T> compute(tensor<T> & input) {
         if(!compare() )
           throw std::invalid_argument("Constrain input and output types to float tensors.");
+        if(p!=2 && p!=1 ){
+          throw std::invalid_argument("Constrain input not supported.");
+          return input;
+        }
    
     tensor<T> result(input.shape(), input.name());
 
 		  
 		  DNNC_EIGEN_MATRIX(eigenMatrixA, input) ; 
-		 
-
-		 
+		 		 
       if(axis==0 && p==1){
       int i,j;
       for (i=0 ; i<int(input.shape()[1]); i++){
@@ -133,19 +138,16 @@ public:
 				for ( j=0 ; j< int(input.shape()[1]); j++){
 					 sum+=(eigenMatrixA(i,j)*eigenMatrixA(i,j));
 				}
-          
-      
         for ( j=0 ; j< int(input.shape()[1]); j++){
-					eigenMatrixA(i,j)=eigenMatrixA(i,j)/sqrt(sum);
-        
+					eigenMatrixA(i,j)=eigenMatrixA(i,j)/sqrt(sum); 
 				}   
 			}
     }
-       Matrix<T, Dynamic, Dynamic> eResult=eigenMatrixA;
+    
+    Matrix<T, Dynamic, Dynamic> eResult=eigenMatrixA;
 		  
-		  result.load( eResult.data() ); 
-
-		  return result;
+result.load( eResult.data() ); 
+    return result;
   }
 };
 } // namespace dnnc

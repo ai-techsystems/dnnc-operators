@@ -239,6 +239,47 @@ tensor<float> multiply(tensor<float> &a, tensor<float> &b) {
   return op.compute(a, b);
 }
 
+tensor<bool> less(tensor<float> &a, tensor<float> &b) {
+  Less<float> op;
+  return op.compute(a,b);
+}
+
+tensor<float> log(tensor<float> &a) {
+  Log<float> op;
+  return op.compute(a);
+}
+
+tensor<float> logsoftmax(tensor<float> &input) {
+  LogSoftmax<float> op;
+  return op.compute(input);
+}
+
+tensor<float> lpnormalization(tensor<float> &input) {
+  LpNormalization<float> op;
+  return op.compute(input);
+}
+
+tensor<int> multiply(tensor<int> &a, tensor<int> &b) {
+  MatMulInteger<int> op;
+  return op.compute(a, b);
+}
+
+tensor<float> mean(std::vector<tensor<T>> inputs) {
+  Mean<float> op;
+  return op.compute(input);
+}
+
+tensor<float> min(std::vector<tensor<T>> inputs) {
+  Min<float> op;
+  return op.compute(input);
+}
+
+
+
+
+
+
+
 tensor<float> thresholded_relu(tensor<float> &input) {
   ThresholdedRelu<float> op;
   return op.compute(input);
