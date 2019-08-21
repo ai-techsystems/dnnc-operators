@@ -24,8 +24,16 @@
 
 #include "core/tensor.h"
 #include "operators/Add.h"
-#include "operators/MatMul.h"
-#include "operators/ThresholdedRelu.h"
+#include "operators/DequantizeLinear.h"
+#include "operators/Div.h"
+#include "operators/Elu.h"
+#include "operators/Equal.h"
+#include "operators/Erf.h"
+#include "operators/Exp.h"
+#include "operators/EyeLike.h"
+#include "operators/Flatten.h"
+#include "operators/Floor.h"
+#include "operators/Gemm.h"
 #include "operators/GlobalAveragePool.h"
 #include "operators/GlobalLpPool.h"
 #include "operators/GlobalMaxPool.h"
@@ -37,6 +45,8 @@
 #include "operators/IsNaN.h"
 #include "operators/LeakyRelu.h"
 #include "operators/InstanceNormalization.h"
+#include "operators/MatMul.h"
+#include "operators/ThresholdedRelu.h"
 
 extern std::vector<float> listTupleToVector_Float(PyObject *);
 
@@ -114,19 +124,59 @@ tensor<float> arange(size_t stop, size_t start = 0, size_t step = 1) {
   return result;
 }
 
-tensor<float> multiply(tensor<float> &a, tensor<float> &b) {
-  MatMul<float> op;
-  return op.compute(a, b);
-}
-
 tensor<float> add(tensor<float> &a, tensor<float> &b) {
   Add<float> op;
   return op.compute(a, b);
 }
 
-tensor<float> thresholded_relu(tensor<float> &input) {
-  ThresholdedRelu<float> op;
-  return op.compute(input);
+tensor<float> dequantize_linear(tensor<float> &a, tensor<float> &b, tensor<float> &c) {
+  DequantizeLinear<float> op;
+  return op.compute(a, b, c);
+}
+
+tensor<float> div(tensor<float> &a, tensor<float> &b) {
+  Div<float> op;
+  return op.compute(a, b);
+}
+
+tensor<float> elu(tensor<float> &a, float alpha=1.0) {
+  Elu<float> op("localOpName",alpha);
+  return op.compute(a);
+}
+
+tensor<float> equal(tensor<float> &a, tensor<float> &b) {
+  Equal<float> op;
+  return op.compute(a, b);
+}
+
+tensor<float> erf(tensor<float> &a) {
+  Erf<float> op;
+  return op.compute(a);
+}
+
+tensor<float> exp(tensor<float> &a) {
+  Exp<float> op;
+  return op.compute(a);
+}
+
+tensor<float> eye_like(tensor<float> &a, int k=0) {
+  EyeLike<float> op("localOpName",k);
+  return op.compute(a);
+}
+
+tensor<float> flatten(tensor<float> &a, int axis=1) {
+  Flatten<float> op("localOpName",axis);
+  return op.compute(a);
+}
+
+tensor<float> floor(tensor<float> &a) {
+  Floor<float> op;
+  return op.compute(a);
+}
+
+tensor<float> gemm(tensor<float>& a , tensor<float>& b , tensor<float>& c , float alpha = 1.0 , float beta = 1.0 , int transA = 0 , int transB = 0 ) {
+  Gemm<float> op("localOpName",alpha,beta,transA,transB);
+  return op.compute(a,b,c);
 }
 
 tensor<float> global_average_pool(tensor<float> &input) {
@@ -182,4 +232,14 @@ tensor<float> leakyrelu(tensor<float>& a,float alpha = 0.01) {
 tensor<float> instancenormalization(tensor<float>& input,tensor<float>& scale,tensor<float>& B,float epsilon=1e-5) {
   InstanceNormalization<float> op("localOpName",epsilon);
   return op.compute(input,scale,B);
+}
+
+tensor<float> multiply(tensor<float> &a, tensor<float> &b) {
+  MatMul<float> op;
+  return op.compute(a, b);
+}
+
+tensor<float> thresholded_relu(tensor<float> &input) {
+  ThresholdedRelu<float> op;
+  return op.compute(input);
 }

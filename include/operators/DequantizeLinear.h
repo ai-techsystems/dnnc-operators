@@ -38,9 +38,14 @@ public:
 	  {
 		  if (a_scale.shape() != a_zero_point.shape())
 			  throw std::invalid_argument("tensor dimenions not appropriate for DequantizeLinear operator."); 
+		  /*
+		  
+		  // Check this when you can take input both int and float tensor together in compute function
+
 		  if (typeid(a_zero_point)!=typeid(tensor<int>) || typeid(a)!=typeid(tensor<int>))
 			  throw std::invalid_argument("tensor types not appropriate for DequantizeLinear operator."); 
 		  
+		  */
 		  tensor<T> result(a.shape()[0], a.shape()[1]); 
 		  
 		  DNNC_EIGEN_MATRIX(eigenMatrixA, a) ; 
