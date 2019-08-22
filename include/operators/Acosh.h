@@ -39,9 +39,11 @@ public:
 	
     for (size_t i = 0; i < a.length(); i++){
 		float x = a[i];
-		if (0 >= x)
+		if (0 >= x){
+		   result[i] = x;
 		   throw std::invalid_argument(
-          "Warning : tensor value is negative cannot calculate ArcCOSH");
+          "Warning : tensor value is negative cannot calculate ACOSH");
+			}
 		result[i] = log(x + sqrt(x*x - 1));
 	}
 	

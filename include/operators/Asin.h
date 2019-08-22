@@ -39,8 +39,10 @@ public:
 	
     for (size_t i = 0; i < a.length(); i++){
 		float x = a[i];
-		if (x<-1 && x>1)
+		if (x<-1 && x>1){
+			result[i] = x;
 			throw std::invalid_argument("Error : the value of tensor 			element is not lying in the domain of arc sine ");
+			}
 		result[i] = asin(x);
 	}
 	
