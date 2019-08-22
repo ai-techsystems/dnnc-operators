@@ -34,8 +34,7 @@ int main() {
 	tensor<float> a(3,2,3,2); a.load(d1);
 	int axis = 2 ;
 
-	Flatten<float> m("localOpName");
-	m.setAttribute(attr_axis,axis);
+	Flatten<float> m("localOpName", axis);
 	auto result = m.compute(a);
 
 	std::cout << result ;

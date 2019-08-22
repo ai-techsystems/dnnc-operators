@@ -30,41 +30,31 @@ using namespace Eigen;
 namespace dnnc {
 template <typename T> class Log : public baseOperator<T> {
   //  Log attributes
+  //None
 public:
   Log(std::string name = "opLog") : baseOperator<T>(opLog, name) {}
 
   // bool getAttribute<int>(OPATTR attrName, int& obj) ;
-
-  static T _log(T x){
-		   
-      	return log(x);
-      }
-
+  
     static bool compare()
       {
         return ( (typeid(T) == typeid(float))||(typeid(T) == typeid(double)) );
       }
 
-      tensor<T> 
-      compute(tensor<T>& a)
+      tensor<T> compute(tensor<T>& a)
 	  {  
        if(!compare() )
           throw std::invalid_argument("Constrain input and output types to float tensors.");
 
-      if (a.rank() <= 4) {
 		  
 		  tensor<T> result(a.shape(),a.name()); 
 		  
 		  for(size_t i=0;i< a.length();i++)
       {
-        result[i]=_log(a[i]);
+        result[i]=log(a[i]);    //element-wise
       }
       return result;
    }
-   
-   else
-      throw std::invalid_argument("tensor dimenions not appropriate for log operator.");
-  }
 };
 } // namespace dnnc
 

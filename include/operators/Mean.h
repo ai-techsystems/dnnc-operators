@@ -61,8 +61,7 @@ public:
     // for now check every shape is equal and create result tensor.
     for (size_t i = 1; i < inputs.size(); i++)
       if (inputs[0].shape() != inputs[i].shape())
-        throw std::invalid_argument(
-            "Mean operator requires tensors with equal shape.");
+        throw std::invalid_argument("Mean operator requires tensors with equal shape.");
 
     tensor<T> result(inputs[0].shape());
 
@@ -78,3 +77,4 @@ public:
   }
 };
 } // namespace dnnc
+

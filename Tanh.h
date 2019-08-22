@@ -21,24 +21,23 @@
 // https://github.com/ai-techsystems/dnnCompiler
 //
 
-#include "operators/Elu.h"
+#pragma once
+#include "operators/baseOperator.h"
+#include <string>
 
-using namespace dnnc;
 using namespace Eigen;
 
-#ifdef DNNC_ELU_TEST
-#include <iostream>
-int main() {
-	float d1[6] = {-1., -2., -3., 1., 2., 3.};
-	tensor<float> a(6); a.load(d1);
-	float alpha = 2.0;
+namespace dnnc {
+template <typename T> class Tanh : public baseOperator<T> {
+  //  Tanh attributes
+public:
+  Tanh(std::string name = "opTanh") : baseOperator<T>(opTanh, name) {}
 
-	Elu<float> m("localOpName",alpha);
-	auto result = m.compute(a);
+  // bool getAttribute<int>(OPATTR attrName, int& obj) ;
 
-	std::cout << result ;
-	std::cout << "\n" ;
-
-	return 0;
-}
-#endif
+  void compute(void) {
+    // CHANGE return-type and args
+    // AND ADD YOUR FUNCTIONAL CODE HERE
+  }
+};
+} // namespace dnnc

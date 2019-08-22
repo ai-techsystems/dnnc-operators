@@ -30,6 +30,7 @@ using namespace Eigen;
 namespace dnnc {
 template <typename T> class Less : public baseOperator<T> {
   //  Less attributes
+  //None
 public:
   Less(std::string name = "opLess") : baseOperator<T>(opLess, name) {}
 
@@ -42,19 +43,15 @@ public:
       
       tensor<bool> compute(tensor<T>& a,tensor<T>& b)
     {
-       if (a.rank() <= 4){
       if (a.shape() != b.shape())
         throw std::invalid_argument("tensor dimenions not appropriate for Less operator.");
        
       tensor<bool> result(a.shape(),a.name());
       for(size_t i=0;i< a.length();i++)
       {
-        result[i]=comp(a[i],b[i]);
+        result[i]=comp(a[i],b[i]);        //element-wise A and B
       }
       return result;
-    }
-    else
-    throw std::invalid_argument("tensor dimenions not appropriate for Less operator.");
   }
 };
 } // namespace dnnc

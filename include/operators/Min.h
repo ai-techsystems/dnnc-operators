@@ -45,6 +45,7 @@ public:
   Min(std::string name = "opMin") : baseOperator<T>(opMin, name) {}
 
   tensor<T> compute(std::vector<tensor<T>> inputs) {
+
     // TODO: broadcasting requirements.
     // 1. find the tensors with largest rank
     // 2. determine shape with largest dimension of each rank among largest rank
@@ -52,6 +53,7 @@ public:
     // 3. create a result tensor with this new shape
     // 4. broadcast other tensors to result vector.
 
+    
     if ( inputs.size() == 0 )
     { 
       throw std::invalid_argument("Min operator requires non-zero size input vector.") ;
@@ -61,8 +63,7 @@ public:
     // for now check every shape is equal and create result tensor.
     for (size_t i = 1; i < inputs.size(); i++)
       if (inputs[0].shape() != inputs[i].shape())
-        throw std::invalid_argument(
-            "Min operator requires tensors with equal shape.");
+        throw std::invalid_argument("Min operator requires tensors with equal shape.");
 
     tensor<T> result(inputs[0].shape());
 

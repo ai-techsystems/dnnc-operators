@@ -43,9 +43,16 @@
 #include "operators/Identity.h"
 #include "operators/IsInf.h"
 #include "operators/IsNaN.h"
-#include "operators/LeakyRelu.h"
 #include "operators/InstanceNormalization.h"
+#include "operators/LeakyRelu.h"
+#include "operators/Less.h"
+#include "operators/Log.h"
+#include "operators/LpNormalization.h"
+#include "operators/LogSoftmax.h"
 #include "operators/MatMul.h"
+#include "operators/MatMulInteger.h"
+#include "operators/Mean.h"
+#include "operators/Min.h"
 #include "operators/ThresholdedRelu.h"
 
 extern std::vector<float> listTupleToVector_Float(PyObject *);
@@ -238,6 +245,42 @@ tensor<float> multiply(tensor<float> &a, tensor<float> &b) {
   MatMul<float> op;
   return op.compute(a, b);
 }
+
+tensor<bool> less(tensor<float> &a, tensor<float> &b) {
+  Less<float> op;
+  return op.compute(a,b);
+}
+
+tensor<float> log(tensor<float> &a) {
+  Log<float> op;
+  return op.compute(a);
+}
+
+tensor<float> logsoftmax(tensor<float> &input) {
+  LogSoftmax<float> op;
+  return op.compute(input);
+}
+
+tensor<float> lpnormalization(tensor<float> &input) {
+  LpNormalization<float> op;
+  return op.compute(input);
+}
+
+tensor<int> multiply(tensor<int> &a, tensor<int> &b) {
+  MatMulInteger<int> op;
+  return op.compute(a, b);
+}
+
+tensor<float> mean(std::vector<tensor<float>> &input) {
+  Mean<float> op;
+  return op.compute(input);
+}
+
+tensor<float> min(std::vector<tensor<float>> &input) {
+  Min<float> op;
+  return op.compute(input);
+}
+
 
 tensor<float> thresholded_relu(tensor<float> &input) {
   ThresholdedRelu<float> op;

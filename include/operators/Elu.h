@@ -32,8 +32,10 @@ template <typename T> class Elu : public baseOperator<T> {
 protected:	
 	float alpha = 1.0;
 public:
-  Elu(std::string name = "opElu")
-      : baseOperator<T>(opElu, name) {}
+  Elu(std::string name = "opElu", float alpha = 1.0)
+      : baseOperator<T>(opElu, name) {
+      	this->alpha = alpha;
+      }
 
       bool getAttribute(OPATTR attrName, float &obj) {
 	    if (attrName == attr_alpha) {
@@ -42,11 +44,7 @@ public:
 	    }
 	    return false;
 	  }
-	  void setAttribute(OPATTR attrName, float &obj) {
-	    if (attrName == attr_alpha) {
-	      alpha = obj;
-	    }
-	  }
+	  
   tensor<T> 
       compute(tensor<T>& input )
 	  {

@@ -20,7 +20,7 @@
 // This file is part of AITS DNN compiler maintained at
 // https://github.com/ai-techsystems/dnnCompiler
 //
-
+//Eigen cwise unsupported-tensors(written TODO in original doc)
 #pragma once
 #include "operators/baseOperator.h"
 #include <string>
@@ -31,6 +31,7 @@ namespace dnnc {
 template <typename T> class LogSoftmax : public baseOperator<T> {
   //  LogSoftmax attributes
 protected:
+    //default
     int axis=1;
 
 public:
@@ -60,7 +61,7 @@ public:
         return ( (typeid(T) == typeid(float))||(typeid(T) == typeid(double)) );
       }
 
-      tensor<T> compute(tensor<T>& input)
+    tensor<T> compute(tensor<T>& input)
 	  {  
        if(!compare() )
           throw std::invalid_argument("Constrain input and output types to float tensors.");
@@ -72,16 +73,17 @@ public:
 		  tensor<T> result(input.shape(), input.name()); 
 		  
 		  DNNC_EIGEN_MATRIX(eigenMatrixA, input) ; 
-		
+
+      //default cases
       if(axis==1){
          int i,j;
       for ( i=0 ; i<int(input.shape()[0]); i++){
         float sum=0;
 			for ( j=0 ; j< int(input.shape()[1]); j++){
-					 sum+= exp(eigenMatrixA(i,j));
+					 sum+= exp(eigenMatrixA(i,j));                  //computing softmax as per axis(https://en.wikipedia.org/wiki/Softmax_function)
 				}
       for ( j=0 ; j< int(input.shape()[1]); j++){
-			    eigenMatrixA(i,j)=log(exp(eigenMatrixA(i,j)/sum));
+			    eigenMatrixA(i,j)=log(exp(eigenMatrixA(i,j)/sum));          //computing logsoftmax as per axis
 				}               
 			}
     }
