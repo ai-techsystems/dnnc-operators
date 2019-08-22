@@ -29,15 +29,20 @@ using namespace Eigen;
 
 namespace dnnc {
 template <typename T> class Asinh : public baseOperator<T> {
-  //  Asinh attributes
 public:
-  Asinh(std::string name = "opAsinh") : baseOperator<T>(opAsinh, name) {}
+  Asinh(std::string name = "opAsinh")
+      : baseOperator<T>(opAsinh, name) {}
 
-  // bool getAttribute<int>(OPATTR attrName, int& obj) ;
-
-  void compute(void) {
-    // CHANGE return-type and args
-    // AND ADD YOUR FUNCTIONAL CODE HERE
+  tensor<T> compute(tensor<T> &a)  {
+	  
+	tensor<T> result(a.shape());
+	
+    for (size_t i = 0; i < a.length(); i++){
+		float x = a[i];
+		result[i] = log(x + sqrt(x*x + 1));
+	}
+	
+	return result;
   }
 };
 } // namespace dnnc
