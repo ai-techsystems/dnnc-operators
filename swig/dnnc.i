@@ -129,11 +129,14 @@ extern dnnc::tensor<float>  \
 extern dnnc::tensor<float>  \
         lpnormalization(dnnc::tensor<float>& input,int axis=1,int p=2);
 extern dnnc::tensor<int>  \
-        matmulinteger(dnnc::tensor<int>& a, dnnc::tensor<int>& b) ;
+        multiply(dnnc::tensor<int>& a, dnnc::tensor<int>& b) ;
+
+// The below (std::vector<tensor<float>>) needs a fix
 extern dnnc::tensor<float>  \
-        mean(std::vector<tensor<float>> inputs) ;
+        mean(std::vector<dnnc::tensor<float>> &input) ;
 extern dnnc::tensor<float>  \
-        min(std::vector<tensor<float>> inputs) ;
+        min(std::vector<dnnc::tensor<float>> &input) ;
+
 
 extern dnnc::tensor<float> array(PyObject*);
 extern dnnc::tensor<float> arange(size_t stop, size_t start=0, size_t step=1);
@@ -208,10 +211,12 @@ extern dnnc::tensor<float>  \
         lpnormalization(dnnc::tensor<float>& input,int axis=1,int p=2);
 extern dnnc::tensor<int>  \
         multiply(dnnc::tensor<int>& a, dnnc::tensor<int>& b);
+
+// The below (std::vector<tensor<float>>) needs a fix
 extern dnnc::tensor<float>  \
-        mean(std::vector<tensor<float>> inputs);
+        mean(std::vector<dnnc::tensor<float>>& input) ;
 extern dnnc::tensor<float>  \
-        min(std::vector<tensor<float>> inputs);
+        min(std::vector<dnnc::tensor<float>>& input) ;
 
 extern dnnc::tensor<float> array(PyObject* objects);
 extern dnnc::tensor<float> arange(size_t stop, size_t start=0, size_t step=1);
