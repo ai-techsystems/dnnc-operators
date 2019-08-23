@@ -92,8 +92,7 @@ public:
   // tensor constructor with arbitrary dimension
   tensor(std::vector<DIMENSION> dimn, std::string n = "",
          INIT_TYPE fill = INIT_NONE)
-      : _ref(0x0), _mem_layout(0x0), _name(n) {
-    _shape = dimn;
+      : _ref(0x0), _mem_layout(0x0), _name(n), _shape(dimn) {
     init(fill);
   }
   tensor(DIMENSION x = 0, DIMENSION y = 0, DIMENSION z = 0, DIMENSION w = 0,
@@ -138,6 +137,10 @@ public:
     }
   }
 
+  inline void load(const T& data, size_t i, size_t j=0,
+          size_t k=0, size_t l=0) {
+      this->operator()(i,j,k,l) = data;
+  }
   void load(std::vector<T> data) {
     size_t sz = length();
     for (size_t i = 0; i < data.size() && i < sz; i++)
@@ -149,16 +152,85 @@ public:
     for (size_t i = 0; i < length(); i++)
       _mem_layout[i] = data[i];
   }
+#ifndef SWIGPYTHON
   friend std::ostream &operator<<(std::ostream &os, const tensor<T> &t) {
     if (t._name.size())
       os << t._name << "=";
     os << t.to_string();
     return os;
   }
+#endif
 
-  std::string to_string() const {
+  std::string to_string(const size_t max_el = DNNC_TENSOR_MAX_EL) const {
+    std::string str = _name.size() ? _name + "=" : "";
+    if ((rank() == 1) || ((rank() == 2) && (_shape[0] == 1))) {
+      str += "\n[";
+      size_t i = 0;
+      for (i = 0; i < length() && i < max_el; i++)
+        str += (i ? " " : "") + std::to_string(_mem_layout[i]);
+      str += i == max_el ? "...]" : "]";
+    } else if (rank() == 2) {
+      str += "\n[";
+      size_t i = 0;
+      for (i = 0; i < _shape[0] && i < max_el; i++) {
+        str += i ? "\n [" : "[";
+        size_t j = 0;
+        for (j = 0; j < _shape[1] && j < max_el; j++) {
+          size_t index = i * _shape[0] + j;
+          str += (j ? " " : "") + std::to_string(_mem_layout[index]);
+        }
+        str += (j == max_el ? "...]" : "]");
+      }
+      str += i == max_el ? "...]" : "]";
+    } else if (rank() == 3) {
+      str += "\n[";
+      size_t i = 0;
+      for (i = 0; i < _shape[0] && i < max_el; i++) {
+        str += i ? "\n [" : "[";
+        size_t j = 0;
+        for (j = 0; j < _shape[1] && j < max_el; j++) {
+          str += j ? "\n  [" : "[";
+          size_t k = 0;
+          for (k = 0; k < _shape[2] && k < max_el; k++) {
+            size_t index = i * _shape[1] * _shape[2] + j * _shape[2] + k;
+            str += (k ? " " : "") + std::to_string(_mem_layout[index]);
+          }
+          str += k == max_el ? "...]" : "]";
+        }
+        str += j == max_el ? "...]" : "]";
+      }
+      str += i == max_el ? "...]" : "]";
+    } else if (rank() == 4) {
+      str += "\n[";
+      size_t i = 0;
+      for (i = 0; i < _shape[0] && i < max_el; i++) {
+        str += i ? "\n [" : "[";
+        size_t j = 0;
+        for (j = 0; j < _shape[1] && j < max_el; j++) {
+          str += j ? "\n  [" : "[";
+          size_t k = 0;
+          for (k = 0; k < _shape[2] && k < max_el; k++) {
+            str += k ? "\n   [" : "[";
+            size_t l = 0;
+            for (l = 0; l < _shape[3] && l < max_el; l++) {
+              size_t index = i * _shape[1] * _shape[2] * _shape[3] +
+                             j * _shape[2] * _shape[3] + k * _shape[3] + l;
+              str += (l ? " " : "") + std::to_string(_mem_layout[index]);
+            }
+            str += l == max_el ? "...]" : "]";
+          }
+          str += k == max_el ? "...]" : "]";
+        }
+        str += j == max_el ? "...]" : "]";
+      }
+      str += i == max_el ? "...]" : "]";
+    }
+    return str + "\n";
+  }
+
+  // this converts EIGEN-results to numpy results.
+  std::string eigen_to_numpy() const {
     std::string str;
-#define DNNC_MAX_SHOW 30
     if ((rank() == 1) || ((rank() == 2) && (_shape[0] == 1))) {
       if (_name.size())
         str = _name + "=\n";
@@ -167,7 +239,7 @@ public:
         if (i != 0)
           str += " ";
         str += std::to_string(_mem_layout[i]);
-        if (i > DNNC_MAX_SHOW) {
+        if (i > DNNC_TENSOR_MAX_EL) {
           str += "...\n";
           break;
         }
@@ -183,12 +255,12 @@ public:
         for (size_t j = 0; j < _shape[1]; j++) {
           size_t index = i + _shape[0] * j;
           str += std::to_string(_mem_layout[index]) + " ";
-          if (j > DNNC_MAX_SHOW) {
+          if (j > DNNC_TENSOR_MAX_EL) {
             str += "...";
             break;
           }
         }
-        if (i > DNNC_MAX_SHOW) {
+        if (i > DNNC_TENSOR_MAX_EL) {
           str += "...";
           break;
         }
@@ -204,19 +276,19 @@ public:
           for (size_t j = 0; j < _shape[1]; j++) {
             size_t index = i + _shape[0] * j + _shape[0] * _shape[1] * k;
             str += std::to_string(_mem_layout[index]) + " ";
-            if (j > DNNC_MAX_SHOW) {
+            if (j > DNNC_TENSOR_MAX_EL) {
               str += "...";
               break;
             }
           }
-          if (i > DNNC_MAX_SHOW) {
+          if (i > DNNC_TENSOR_MAX_EL) {
             str += "...";
             break;
           }
           str += "]\n";
         }
         str += "]\n";
-        if (k > DNNC_MAX_SHOW) {
+        if (k > DNNC_TENSOR_MAX_EL) {
           str += "...\n";
           break;
         }
@@ -231,7 +303,7 @@ public:
         if (i != 0)
           str += " ";
         str += std::to_string(_mem_layout[i]);
-        if (i > DNNC_MAX_SHOW) {
+        if (i > DNNC_TENSOR_MAX_EL) {
           str += "...\n";
           break;
         }
@@ -248,10 +320,25 @@ public:
     std::string str = to_string();
     size_t sz = str.size();
     char *result = (char *)malloc(sz + 1);
-    for (size_t i = 0; i <= str.size(); i++)
+    for (size_t i = 0; i < str.size(); i++)
       result[i] = str.at(i);
     result[sz] = '\0';
     return result;
+  }
+  char *__repr__() {
+    std::string str;
+    for (size_t i = 0; i < length(); i++)
+      str += std::to_string(_mem_layout[i]) + ' ';
+
+    size_t sz = str.size();
+    char *result = (char *)malloc(sz + 1);
+    for (size_t i = 0; i < str.size(); i++)
+      result[i] = str.at(i);
+    result[sz] = '\0';
+    return result;
+  }
+  const std::vector<T> data() const {
+    return std::vector<T>(_mem_layout, _mem_layout + length());
   }
 
   // public methods
@@ -265,7 +352,7 @@ public:
   std::string name() const { return _name; }
   const DIMENSION rank() const { return _shape.size(); }
   const std::vector<DIMENSION> shape() const { return _shape; }
-  void reshape(std::vector<size_t> &new_shape) {
+  tensor<T> reshape(std::vector<size_t> &new_shape) {
     DIMENSION newLength = new_shape.size() ? 1 : 0;
     for (size_t i = 0; i < new_shape.size(); i++)
       newLength = newLength * new_shape[i];
@@ -275,13 +362,25 @@ public:
       throw std::invalid_argument("new reshape length can't be zero.");
     if (newLength != length()) {
       std::string msg = "new reshape length " + std::to_string(newLength) +
-                        " does not match tensor\'s length" +
+                        " does not match tensor\'s original length " +
                         std::to_string(length()) + ".\n";
       throw std::invalid_argument(msg);
     }
-
     _shape = new_shape;
+
+    return *this;
   }
+  tensor<T> flatten() {
+    std::vector<size_t> new_shape;
+    new_shape.push_back(length());
+
+    tensor<T> result(new_shape);
+    result.load(_mem_layout);
+
+    return result;
+  }
+  // TODO:
+  void transpose() {}
   // reference: https://github.com/onnx/onnx/blob/master/docs/Broadcasting.md
   bool broadcast(const tensor<T> &other) {
     // TODO:
@@ -291,20 +390,25 @@ public:
   }
   // flat index, unsafe method
   T &operator[](const INDEX &index) const {
-    if (index >= length())
-      throw std::out_of_range("illegal tensor index.");
+    if (index >= length()) {
+      std::string msg = "illegal tensor index " + std::to_string(index) + ".";
+      throw std::out_of_range(msg.c_str());
+    }
 
     return _mem_layout[index];
   }
 
   T &operator()(std::vector<INDEX> &indices) const {
     INDEX index = 0;
-    // column-major:Loc(A[i][j][k])= base+w((i-x)+d0*d1(k-z)+d0*(j-y))
-    if (rank() == 3) {
-      index = indices[0] + _shape[0] * indices[1] +
-              _shape[0] * _shape[1] * indices[2];
+    if (rank() == 4) {
+      index = indices[0] * _shape[1] * _shape[2] * _shape[3] +
+              indices[1] * _shape[2] * _shape[3] + indices[2] * _shape[3] + indices[3];
+    } else if (rank() == 3) {
+      index = indices[0] * _shape[1] * _shape[2] + indices[1] * _shape[2] + indices[2];
     } else if (rank() == 2) {
-      index = indices[0] + _shape[0] * indices[1];
+      index = indices[0] * _shape[1] + indices[1];
+    } else if (rank() == 1) {
+      index = indices[0];
     } else {
       for (size_t i = 0; i < indices.size(); i++) {
         DIMENSION dsz = 1;
@@ -336,5 +440,5 @@ public:
     std::string tensor_proto = "";
     return tensor_proto;
   }
-};
+}; // class tensor
 } // namespace dnnc
