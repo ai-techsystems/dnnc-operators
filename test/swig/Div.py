@@ -1,6 +1,6 @@
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
-# distributed with this work for additional information
+# distributed with this work for divitional information
 # regarding copyright ownership.  The ASF licenses this file
 # to you under the Apache License, Version 2.0 (the
 # "License"); you may not use this file except in compliance
@@ -27,7 +27,7 @@ import dnnc as dc
 import numpy as np
 import unittest
 
-class AddTest(unittest.TestCase):
+class DivTest(unittest.TestCase):
     def setUp(self):
         self.len = 24
         self.np_a = np.random.randn(self.len).astype(np.float32)
@@ -37,50 +37,50 @@ class AddTest(unittest.TestCase):
         self.dc_a = dc.array(list(self.np_a));
         self.dc_b = dc.array(list(self.np_b));
 
-    def test_Add1D (self):
-        npr = np.add(self.np_a, self.np_b)
-        dcr = dc.add(self.dc_a, self.dc_b)
+    def test_Div1D (self):
+        npr = np.divide(self.np_a, self.np_b)
+        dcr = dc.div(self.dc_a, self.dc_b)
         np.testing.assert_allclose(npr, np.array(dcr.data()[0]).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
 
-    def test_Add2D (self):
+    def test_Div2D (self):
         np_a = np.reshape(self.np_a, (6,4))
         np_b = np.reshape(self.np_b, (6,4))
         dc_a = dc.reshape(self.dc_a, (6,4));
         dc_b = dc.reshape(self.dc_b, (6,4));
-        npr = np.add(np_a, np_b);
-        dcr = dc.add(dc_a, dc_b);
+        npr = np.divide(np_a, np_b);
+        dcr = dc.div(dc_a, dc_b);
         np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
 
-    def test_Add3D (self):
+    def test_Div3D (self):
         np_a = np.reshape(self.np_a, (2,4,3))
         np_b = np.reshape(self.np_b, (2,4,3))
         dc_a = dc.reshape(self.dc_a, (2,4,3));
         dc_b = dc.reshape(self.dc_b, (2,4,3));
 
-        npr = np.add(np_a, np_b);
-        dcr = dc.add(dc_a, dc_b);
+        npr = np.divide(np_a, np_b);
+        dcr = dc.div(dc_a, dc_b);
 
         np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
 
-    def test_Add4D (self):
+    def test_Div4D (self):
         np_a = np.reshape(self.np_a, (2,2,2,3))
         np_b = np.reshape(self.np_b, (2,2,2,3))
         dc_a = dc.reshape(self.dc_a, (2,2,2,3));
         dc_b = dc.reshape(self.dc_b, (2,2,2,3));
 
-        npr = np.add(np_a, np_b);
-        dcr = dc.add(dc_a, dc_b);
+        npr = np.divide(np_a, np_b);
+        dcr = dc.div(dc_a, dc_b);
 
         np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
 
 if __name__ == '__main__':
-    # m = AddTest()
-    # m.test_Add1D()
-    # m.test_Add2D()
-    # m.test_Add3D()
+    # m = DivTest()
+    # m.test_Div1D()
+    # m.test_Div2D()
+    # m.test_Div3D()
     unittest.main()
     
