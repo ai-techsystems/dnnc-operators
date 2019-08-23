@@ -5,6 +5,8 @@ Development and discussion of DNNC operators.
 
 * To get an idea of how to implement numpy like interface with dnnc see **[dnnc Tensor Functions](docs/dnncTensorFunctions.md)**.  
 
+* To see how to implement dnnc python interface see this **[Implementation guide](https://github.com/ai-techsystems/dnnc-operators/blob/master/test/README.md)**
+
 * To refer back to the original Readme **[click here](https://github.com/ai-techsystems/dnnCompiler/blob/master/README.md)**.  
 
 
@@ -78,7 +80,7 @@ Development and discussion of DNNC operators.
 | [Loop](https://github.com/onnx/onnx/blob/master/docs/Operators.md#Loop)                  					|                    	|                     	|                      	|                       	|                        	|                    	|             	|
 | [LpNormalization](https://github.com/onnx/onnx/blob/master/docs/Operators.md#LpNormalization)    			|                    	|      N D               	|       N D               	|   :x:                    	|   :x:                     	|    :heavy_check_mark:                	|    Nikhil         	|
 | [LpPool](https://github.com/onnx/onnx/blob/master/docs/Operators.md#LpPool)                				|                    	|                     	|                      	|                       	|                        	|                    	|             	|
-| [MatMul](https://github.com/onnx/onnx/blob/master/docs/Operators.md#MatMul)                				| 	3 D doesn't work	|         N D         	|          4 D         	|          :x:          	|           :x:          	| :heavy_check_mark: 	|    Rohit    	|
+| [MatMul](https://github.com/onnx/onnx/blob/master/docs/Operators.md#MatMul)                				| 	4 D doesn't work	|         N D         	|          4 D         	|          :x:          	|           :x:          	| :heavy_check_mark: 	|    Rohit    	|
 | [MatMulInteger](https://github.com/onnx/onnx/blob/master/docs/Operators.md#MatMulInteger)    				|                   	|        N D            	|        2 D                	|         :x:           	|   :x:                     	|        :x:               	|    Nikhil         	|
 | [Max](https://github.com/onnx/onnx/blob/master/docs/Operators.md#Max)                   					|                    	|        N D             	|          N D            	|       :heavy_check_mark:        	|   :x:                     	|    :x:                	|    Rohit         	|
 | [MaxPool](https://github.com/onnx/onnx/blob/master/docs/Operators.md#MaxPool)               				|                    	|                     	|                      	|                       	|                        	|                    	|             	|
