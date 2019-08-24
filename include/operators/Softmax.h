@@ -31,8 +31,8 @@ namespace dnnc {
 template <typename T> class Softmax : public baseOperator<T> {
   //  Softmax attributes
 
-
-int axis=1;
+protected:
+  int axis=1;
 public:
   Softmax(std::string name = "opSoftmax")
       : baseOperator<T>(opSoftmax, name) {}
@@ -53,7 +53,6 @@ public:
       }
 
         
-
   static bool compare()
       {
         return ( (typeid(T) == typeid(float))||(typeid(T) == typeid(double)) );
@@ -64,8 +63,8 @@ public:
        if(!compare() )
           throw std::invalid_argument("Constrain a and output types to float tensors.");
 
-      //only 2D excepted
       
+      // For 2D
       if (a.rank() == 2) {
 		  
 		  tensor<T> result(a.shape()[0], a.shape()[1]); 
@@ -80,7 +79,7 @@ public:
 					 sum+= exp(eigenMatrixA(i,j));
 				}
       for ( j=0 ; j< int(a.shape()[1]); j++){
-			    eigenMatrixA(i,j)=log(exp(eigenMatrixA(i,j)/sum));
+			    eigenMatrixA(i,j)=exp(eigenMatrixA(i,j))/(sum);
 				}               
 			}
     }
@@ -93,20 +92,20 @@ public:
           
 				}
         for ( j=0 ; j< int(a.shape()[0]); j++){
-					eigenMatrixA(j,i)=log(exp(eigenMatrixA(j,i))/(sum));
+					eigenMatrixA(j,i)=exp(eigenMatrixA(j,i))/(sum);
         
 				}   
 			}
     }
     
 
-       Matrix<T, Dynamic, Dynamic> eResult= eigenMatrixA;
+      Matrix<T, Dynamic, Dynamic> eResult= eigenMatrixA;
 		  result.load( eResult.data() ); 
 
 		  return result;
    }
    else
-      throw std::invalid_argument("tensor dimenions not appropriate for logsoftmax operator.");
+      throw std::invalid_argument("tensor dimensions not appropriate for softmax operator.");
   }
 };
 } // namespace dnnc
