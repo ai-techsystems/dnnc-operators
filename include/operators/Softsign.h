@@ -27,53 +27,47 @@
 using namespace Eigen;
 
 namespace dnnc {
-  template <typename T>
-  class Softsign : public baseOperator<T> {
-    protected:
-    public:
-      Softsign(std::string name="opSoftsign") : 
-	     baseOperator<T>(opSoftsign, name)
-      {}
+template <typename T> class Softsign : public baseOperator<T> {
+protected:
+public:
+  Softsign(std::string name = "opSoftsign")
+      : baseOperator<T>(opSoftsign, name) {}
 
-      static float softsign_func(T x){
-          return (x/(1+abs(x)));
-      }
+  static float softsign_func(T x) { return (x / (1 + abs(x))); }
 
-      static bool compare()
-      {
-        return ( (typeid(T) == typeid(float))||(typeid(T) == typeid(double)) );
-      }
+  static bool compare() {
+    return ((typeid(T) == typeid(float)) || (typeid(T) == typeid(double)));
+  }
 
-	  // NOT GOOD to return by value
-      tensor<T> 
-      compute(tensor<T>& a)
-	  {
+  // NOT GOOD to return by value
+  tensor<T> compute(tensor<T> &a) {
 
-      if(!compare() )
-          throw std::invalid_argument("Constrain input and output types to float tensors.");
-       
-       
-		  
-		  DNNC_EIGEN_MATRIX(eigenMatrixA, a) ; 
+    if (!compare())
+      throw std::invalid_argument(
+          "Constrain input and output types to float tensors.");
 
-       if(a.rank()==2){   
-		   tensor<T> result(a.shape()[0], a.shape()[1]);
-		  Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA.unaryExpr(&softsign_func); ;
-		  
-		  result.load( eResult.data() ); 
+    DNNC_EIGEN_MATRIX(eigenMatrixA, a);
 
-		  return result;
-       }
-       else if(a.rank()==3){
-         tensor<T> result(a.shape()[0], a.shape()[1],a.shape()[2]);
-		  Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA.unaryExpr(&softsign_func); ;
-		  
-		  result.load( eResult.data() ); 
+    if (a.rank() == 2) {
+      tensor<T> result(a.shape()[0], a.shape()[1]);
+      Matrix<T, Dynamic, Dynamic> eResult =
+          eigenMatrixA.unaryExpr(&softsign_func);
+      ;
 
-		  return result;
-       }
-        else 
-		  throw std::invalid_argument("tensor dimensions not appropriate.");
-	  }
-  };
-}
+      result.load(eResult.data());
+
+      return result;
+    } else if (a.rank() == 3) {
+      tensor<T> result(a.shape()[0], a.shape()[1], a.shape()[2]);
+      Matrix<T, Dynamic, Dynamic> eResult =
+          eigenMatrixA.unaryExpr(&softsign_func);
+      ;
+
+      result.load(eResult.data());
+
+      return result;
+    } else
+      throw std::invalid_argument("tensor dimensions not appropriate.");
+  }
+};
+} // namespace dnnc

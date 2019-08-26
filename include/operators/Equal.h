@@ -30,21 +30,18 @@ using namespace Eigen;
 namespace dnnc {
 template <typename T> class Equal : public baseOperator<T> {
 public:
-  Equal(std::string name = "opEqual")
-      : baseOperator<T>(opEqual, name) {}
+  Equal(std::string name = "opEqual") : baseOperator<T>(opEqual, name) {}
 
-  tensor<T> 
-      compute(tensor<T>& a, tensor<T>& b)
-	  {
-		  if (a.shape() != b.shape())
-			  throw std::invalid_argument("tensor dimenions not appropriate for Equal operator."); 
-		  
-		tensor<T> result(a.shape(), a.name());
-	    for (size_t i = 0; i < a.length(); i++)
-		      result[i] = a[i]==b[i] ? true : false;
+  tensor<T> compute(tensor<T> &a, tensor<T> &b) {
+    if (a.shape() != b.shape())
+      throw std::invalid_argument(
+          "tensor dimenions not appropriate for Equal operator.");
 
+    tensor<T> result(a.shape(), a.name());
+    for (size_t i = 0; i < a.length(); i++)
+      result[i] = a[i] == b[i] ? true : false;
 
-		  return result;
-	  }
+    return result;
+  }
 };
 } // namespace dnnc

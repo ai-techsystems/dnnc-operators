@@ -25,15 +25,15 @@
 #include "core/tensor.h"
 #include "operators/Add.h"
 #include "operators/Div.h"
-#include "operators/MatMul.h"
-#include "operators/ThresholdedRelu.h"
 #include "operators/Less.h"
 #include "operators/Log.h"
 #include "operators/LogSoftmax.h"
 #include "operators/LpNormalization.h"
+#include "operators/MatMul.h"
 #include "operators/MatMulInteger.h"
 #include "operators/Mean.h"
 #include "operators/Min.h"
+#include "operators/ThresholdedRelu.h"
 
 extern std::vector<float> listTupleToVector_Float(PyObject *);
 extern std::vector<size_t> listTupleToVector_SizeT(PyObject *);
@@ -163,7 +163,7 @@ tensor<float> thresholded_relu(tensor<float> &input) {
 
 tensor<bool> less(tensor<float> &a, tensor<float> &b) {
   Less<float> op;
-  return op.compute(a,b);
+  return op.compute(a, b);
 }
 
 tensor<float> log(tensor<float> &input) {

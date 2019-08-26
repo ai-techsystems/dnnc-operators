@@ -33,32 +33,23 @@ template <typename T> class Sinh : public baseOperator<T> {
 public:
   Sinh(std::string name = "opSinh") : baseOperator<T>(opSinh, name) {}
 
-  
-  static float Sinh_func(T x){
-          return sinh(x);
-      }
+  static float Sinh_func(T x) { return sinh(x); }
 
-	  // NOT GOOD to return by value
-      tensor<T> 
-      compute(tensor<T>& a)
-	  {
-		  DNNC_EIGEN_MATRIX(eigenMatrixA, a) ;
-		  if(a.rank()==2)
-		  {
- 			  tensor<T> result(a.shape()[0], a.shape()[1]);   
-		   	  Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA.unaryExpr(&Sinh_func); 
-				 result.load( eResult.data() ); 
-		  		return result;
-		  }
-		  else if(a.rank()==3)
-		  {
- 			  tensor<T> result(a.shape()[0], a.shape()[1], a.shape()[2]);   
-		   	  Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA.unaryExpr(&Sinh_func); 
-				 result.load( eResult.data() ); 
-		  		return result;
-		  }
-		  else 
-		  throw std::invalid_argument("tensor dimensions not appropriate.");
-	  }
+  // NOT GOOD to return by value
+  tensor<T> compute(tensor<T> &a) {
+    DNNC_EIGEN_MATRIX(eigenMatrixA, a);
+    if (a.rank() == 2) {
+      tensor<T> result(a.shape()[0], a.shape()[1]);
+      Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA.unaryExpr(&Sinh_func);
+      result.load(eResult.data());
+      return result;
+    } else if (a.rank() == 3) {
+      tensor<T> result(a.shape()[0], a.shape()[1], a.shape()[2]);
+      Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA.unaryExpr(&Sinh_func);
+      result.load(eResult.data());
+      return result;
+    } else
+      throw std::invalid_argument("tensor dimensions not appropriate.");
+  }
 };
-}
+} // namespace dnnc

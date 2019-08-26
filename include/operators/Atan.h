@@ -33,16 +33,16 @@ template <typename T> class Atan : public baseOperator<T> {
 public:
   Atan(std::string name = "opAtan") : baseOperator<T>(opAtan, name) {}
 
-  tensor<T> compute(tensor<T> &a)  {
-	  
-	tensor<T> result(a.shape());
-	
-    for (size_t i = 0; i < a.length(); i++){
-		float x = a[i];
-		result[i] = atan(x);
-	}
-	
-	return result;
+  tensor<T> compute(tensor<T> &a) {
+
+    tensor<T> result(a.shape());
+
+    for (size_t i = 0; i < a.length(); i++) {
+      float x = a[i];
+      result[i] = atan(x);
+    }
+
+    return result;
   }
 };
 } // namespace dnnc

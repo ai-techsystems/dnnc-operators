@@ -29,20 +29,23 @@ using namespace Eigen;
 #ifdef DNNC_INSTANCENORMALIZATION_TEST
 #include <iostream>
 int main() {
-  float d1[12]={1,1,2,3, 1, 2,6,7,8,9,10,11};
-  tensor<float> a(2,2,2); a.load(d1);
-  float epsilon=1.0;
-  float d2[4]={-1, 1.5,0.29,1};
-  tensor<float> scale(2); scale.load(d2);
-  float d3[4]={0, 1,1,1};
-  tensor<float> B(2); B.load(d3);
-	InstanceNormalization<float> m("localOpName",epsilon);
+  float d1[12] = {1, 1, 2, 3, 1, 2, 6, 7, 8, 9, 10, 11};
+  tensor<float> a(2, 2, 2);
+  a.load(d1);
+  float epsilon = 1.0;
+  float d2[4] = {-1, 1.5, 0.29, 1};
+  tensor<float> scale(2);
+  scale.load(d2);
+  float d3[4] = {0, 1, 1, 1};
+  tensor<float> B(2);
+  B.load(d3);
+  InstanceNormalization<float> m("localOpName", epsilon);
   std::cout << a << "\n";
   std::cout << scale << "\n";
   std::cout << B << "\n";
-	auto result = m.compute(a,scale,B);
+  auto result = m.compute(a, scale, B);
 
-	std::cout << result ;
-	std::cout << "\n" ;
+  std::cout << result;
+  std::cout << "\n";
 }
 #endif

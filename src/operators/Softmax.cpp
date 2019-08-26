@@ -30,13 +30,13 @@ using namespace Eigen;
 #include <iostream>
 int main() {
   float d1[6] = {1., 2., 3., 4., 5., 6.};
-  
-  tensor<float> a(2,3);
+
+  tensor<float> a(2, 3);
   a.load(d1);
-  
+
   Softmax<float> m("localOpName");
-  int axis=0;
-  m.setAttribute(attr_axis,axis);
+  int axis = 0;
+  m.setAttribute(attr_axis, axis);
   auto result = m.compute(a);
 
   std::cout << result;

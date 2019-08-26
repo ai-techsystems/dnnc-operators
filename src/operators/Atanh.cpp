@@ -29,10 +29,10 @@ using namespace Eigen;
 #ifdef DNNC_ATANH_TEST
 #include <iostream>
 int main() {
-	
-		
+
   float d1[1] = {-1.};
-  tensor<float>a (1,1); a.load(d1);
+  tensor<float> a(1, 1);
+  a.load(d1);
 
   Atanh<float> ATANH("localOpName", 0x0);
   auto result = ATANH.compute(a);

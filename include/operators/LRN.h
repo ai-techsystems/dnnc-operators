@@ -23,8 +23,8 @@
 
 #pragma once
 #include "operators/baseOperator.h"
-#include <string>
 #include <cmath>
+#include <string>
 
 using namespace Eigen;
 
@@ -34,88 +34,81 @@ protected:
   float alpha = 0.0001;
   float beta = 0.75;
   float bias = 1.0;
-  int size ;
+  int size;
+
 public:
-  LRN(int size,std::string name = "opLRN",float alpha = 0.0001,float beta = 0.75,float bias = 1.0) : baseOperator<T>(opLRN, name) {
-    this-> alpha = alpha;
-    this-> beta = beta;
-    this-> bias = bias;
-    this-> size = size;
+  LRN(int size, std::string name = "opLRN", float alpha = 0.0001,
+      float beta = 0.75, float bias = 1.0)
+      : baseOperator<T>(opLRN, name) {
+    this->alpha = alpha;
+    this->beta = beta;
+    this->bias = bias;
+    this->size = size;
   }
 
-  static bool compare()
-  {
-    return ( (typeid(T) == typeid(float))||(typeid(T) == typeid(double)) );
+  static bool compare() {
+    return ((typeid(T) == typeid(float)) || (typeid(T) == typeid(double)));
   }
-  bool getAttribute(OPATTR attrName,float& obj)
-  {
+  bool getAttribute(OPATTR attrName, float &obj) {
     if (attrName == attr_alpha) {
       obj = alpha;
       return true;
-    }
-    else if (attrName == attr_beta) {
+    } else if (attrName == attr_beta) {
       obj = beta;
       return true;
-    }
-    else if (attrName == attr_bias) {
+    } else if (attrName == attr_bias) {
       obj = bias;
       return true;
     }
     return false;
   }
-  bool getAttribute(OPATTR attrName,int & obj)
-  {
+  bool getAttribute(OPATTR attrName, int &obj) {
     if (attrName == attr_size) {
       obj = size;
       return true;
     }
     return false;
   }
-  tensor<T> compute(tensor<T>& input)
-  {
-    if(!compare() )
-       throw std::invalid_argument("Constrain input and output types to float tensors.");
+  tensor<T> compute(tensor<T> &input) {
+    if (!compare())
+      throw std::invalid_argument(
+          "Constrain input and output types to float tensors.");
 
-    tensor<T> result(input.shape(),input.name());
+    tensor<T> result(input.shape(), input.name());
     std::vector<size_t> original_shape = input.shape();
 
-
     size_t size = 1;
-    for(size_t i=2;i<input.rank();i++)
-    {
-       size*=input.shape()[i];
+    for (size_t i = 2; i < input.rank(); i++) {
+      size *= input.shape()[i];
     }
 
-    std::vector<size_t> shape{input.shape()[0],input.shape()[1],size};
+    std::vector<size_t> shape{input.shape()[0], input.shape()[1], size};
     input.reshape(shape);
     result.reshape(shape);
     T sq_sum = 0;
-    for (size_t c = 0; c < input.shape()[1]; c++)
-    {
+    for (size_t c = 0; c < input.shape()[1]; c++) {
       int temp1 = c - floor((size - 1) / 2);
       int lower = (0 > temp1) ? 0 : temp1;
       int temp2 = c + ceil((size - 1) / 2);
-      int upper = ( (int(input.shape()[1]) - 1)< temp2 ) ? (int(input.shape()[1]) - 1) : temp2;
-      std::cout<<"Current Channel=" <<c<<"\n";
-      std::cout<<"Upper=" <<upper<<"Lower"<<lower<<"\n";
-      for (int i = lower; i <= upper; i++)
-      {
-        for (size_t j = 0 ; j < input.shape()[0]; j++)
-        {
-          for (size_t k = 0; k < size ; k++)
-          {
-            std::cout <<input(j,i,k)<<',';
-            sq_sum += input(j,i,k)*input(j,i,k);
+      int upper = ((int(input.shape()[1]) - 1) < temp2)
+                      ? (int(input.shape()[1]) - 1)
+                      : temp2;
+      std::cout << "Current Channel=" << c << "\n";
+      std::cout << "Upper=" << upper << "Lower" << lower << "\n";
+      for (int i = lower; i <= upper; i++) {
+        for (size_t j = 0; j < input.shape()[0]; j++) {
+          for (size_t k = 0; k < size; k++) {
+            std::cout << input(j, i, k) << ',';
+            sq_sum += input(j, i, k) * input(j, i, k);
           }
         }
-        std::cout <<"\n";
-        std::cout <<"sq_sum= "<<sq_sum <<std::endl;
-        for (size_t j = 0 ; j < input.shape()[0]; j++)
-        {
-          for (size_t k = 0; k < size ; k++)
-          {
+        std::cout << "\n";
+        std::cout << "sq_sum= " << sq_sum << std::endl;
+        for (size_t j = 0; j < input.shape()[0]; j++) {
+          for (size_t k = 0; k < size; k++) {
 
-            result(j,i,k) = input(j,i,k)/pow(( bias + alpha / size * sq_sum ),beta);
+            result(j, i, k) =
+                input(j, i, k) / pow((bias + alpha / size * sq_sum), beta);
           }
         }
         sq_sum = 0;
@@ -123,6 +116,6 @@ public:
     }
     result.reshape(original_shape);
     return result;
-   }
+  }
 };
 } // namespace dnnc

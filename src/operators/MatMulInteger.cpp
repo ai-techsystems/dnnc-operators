@@ -29,7 +29,7 @@ using namespace Eigen;
 #ifdef DNNC_MATMULINTEGER_TEST
 #include <iostream>
 int main() {
- int d1[6] = {1, 2, 3, 4, 5, 6};
+  int d1[6] = {1, 2, 3, 4, 5, 6};
   int d2[6] = {1, 2, 3, 4, 5, 6};
   tensor<int> a(2, 3);
   a.load(d1);

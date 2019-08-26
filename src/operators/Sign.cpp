@@ -22,25 +22,26 @@
 //
 #include "operators/Sign.h"
 
-using namespace dnnc ;
+using namespace dnnc;
 using namespace Eigen;
 
 //#define DNNC_SIGN_TEST
-#ifdef DNNC_SIGN_TEST 
+#ifdef DNNC_SIGN_TEST
 #include <iostream>
 
 int main() {
-	float d1[6] = {1., 2., 3., 4., 5., 6.};
+  float d1[6] = {1., 2., 3., 4., 5., 6.};
 
-	tensor<float> a(2,3); a.load(d1);
+  tensor<float> a(2, 3);
+  a.load(d1);
 
-	Sign<float> m("localOpName", 0x0);
-	auto result = m.compute(a);
+  Sign<float> m("localOpName", 0x0);
+  auto result = m.compute(a);
 
-	std::cout << result ;
-	std::cout << "\n" ;
+  std::cout << result;
+  std::cout << "\n";
 
-	return 0;
+  return 0;
 }
 
 #endif

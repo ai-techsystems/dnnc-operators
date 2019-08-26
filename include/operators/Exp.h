@@ -30,15 +30,13 @@ using namespace Eigen;
 namespace dnnc {
 template <typename T> class Exp : public baseOperator<T> {
 public:
-  Exp(std::string name = "opExp")
-      : baseOperator<T>(opExp, name) {}
+  Exp(std::string name = "opExp") : baseOperator<T>(opExp, name) {}
 
-  tensor<T> 
-      compute(tensor<T>& a){
-	  	tensor<T> result(a.shape(), a.name());
-	    for (size_t i = 0; i < a.length(); i++)
-		      result[i] = exp(a[i]);
-		  return result;
-	  }
+  tensor<T> compute(tensor<T> &a) {
+    tensor<T> result(a.shape(), a.name());
+    for (size_t i = 0; i < a.length(); i++)
+      result[i] = exp(a[i]);
+    return result;
+  }
 };
 } // namespace dnnc

@@ -30,17 +30,14 @@ using namespace Eigen;
 namespace dnnc {
 template <typename T> class Floor : public baseOperator<T> {
 public:
-  Floor(std::string name = "opFloor")
-      : baseOperator<T>(opFloor, name) {}
+  Floor(std::string name = "opFloor") : baseOperator<T>(opFloor, name) {}
 
-	  // NOT GOOD to return by value
-      tensor<T> 
-      compute(tensor<T>& a)
-	  {
-		tensor<T> result(a.shape(), a.name());
-	    for (size_t i = 0; i < a.length(); i++)
-		      result[i] = floor(a[i]);
-		  return result;
-	  }
+  // NOT GOOD to return by value
+  tensor<T> compute(tensor<T> &a) {
+    tensor<T> result(a.shape(), a.name());
+    for (size_t i = 0; i < a.length(); i++)
+      result[i] = floor(a[i]);
+    return result;
+  }
 };
 } // namespace dnnc

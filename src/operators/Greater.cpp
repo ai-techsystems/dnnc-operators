@@ -22,7 +22,7 @@
 //
 #include "operators/Greater.h"
 
-using namespace dnnc ;
+using namespace dnnc;
 using namespace Eigen;
 
 //#define DNNC_ADD_TEST 1
@@ -30,18 +30,20 @@ using namespace Eigen;
 #include <iostream>
 
 int main() {
-	float d1[6] = {6., 2., 4., 4., 3., 6.};
-	float d2[6] = {1., 2., 3., 4., 5., 6.};
-	tensor<float> a(2,1,3); a.load(d1);
-	tensor<float> b(2,1,3); b.load(d2);
+  float d1[6] = {6., 2., 4., 4., 3., 6.};
+  float d2[6] = {1., 2., 3., 4., 5., 6.};
+  tensor<float> a(2, 1, 3);
+  a.load(d1);
+  tensor<float> b(2, 1, 3);
+  b.load(d2);
 
-	Greater<float> m("localOpName");
-	auto result = m.compute(a, b);
+  Greater<float> m("localOpName");
+  auto result = m.compute(a, b);
 
-	std::cout << result ;
-	std::cout << "\n" ;
+  std::cout << result;
+  std::cout << "\n";
 
-	return 0;
+  return 0;
 }
 
 #endif

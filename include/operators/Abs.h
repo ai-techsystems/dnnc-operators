@@ -30,20 +30,19 @@ using namespace std;
 namespace dnnc {
 template <typename T> class Abs : public baseOperator<T> {
 public:
-  Abs(std::string name = "opAbs")
-      : baseOperator<T>(opAbs, name) {}
+  Abs(std::string name = "opAbs") : baseOperator<T>(opAbs, name) {}
 
-  tensor<T> compute(tensor<T> &a)  {
-	  
-	tensor<T> result(a.shape());
-	
-	DNNC_EIGEN_MATRIX(eigenMatrixA , a);
-	
-	Matrix<T , Dynamic , Dynamic> eResult = eigenMatrixA.cwiseAbs();
-	
-	result.load(eResult.data());
-	
-	return result;
+  tensor<T> compute(tensor<T> &a) {
+
+    tensor<T> result(a.shape());
+
+    DNNC_EIGEN_MATRIX(eigenMatrixA, a);
+
+    Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA.cwiseAbs();
+
+    result.load(eResult.data());
+
+    return result;
   }
 };
 } // namespace dnnc

@@ -39,10 +39,10 @@ public:
           "tensor dimenions aren't appropriate for AND operator.");
 
     tensor<T> result(a.shape()[0], a.shape()[1]);
-	
-    for (size_t i = 0; i < a.length(); i++){
-		result[i] = a[i]&&b[i];
-	}
+
+    for (size_t i = 0; i < a.length(); i++) {
+      result[i] = a[i] && b[i];
+    }
 
     return result;
   }

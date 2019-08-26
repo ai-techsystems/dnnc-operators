@@ -23,7 +23,7 @@
 #include "operators/Hardmax.h"
 #include "operators/baseOperator.h"
 
-using namespace dnnc ;
+using namespace dnnc;
 using namespace Eigen;
 
 //#define DNNC_IDENTITY_TEST 1
@@ -31,17 +31,18 @@ using namespace Eigen;
 #include <iostream>
 
 int main() {
-	float d1[16] = {3, 0,1,2,2,5,1,0,0, 1, 3, 2,0, 1, 2, 3};
-	tensor<float> a(4,2,2); a.load(d1);
-	//tensor<float> b(3,2); b.load(d2);
-	int axis = 1;
-	Hardmax<float> m("localOpName",axis);
-	auto result = m.compute(a);
+  float d1[16] = {3, 0, 1, 2, 2, 5, 1, 0, 0, 1, 3, 2, 0, 1, 2, 3};
+  tensor<float> a(4, 2, 2);
+  a.load(d1);
+  // tensor<float> b(3,2); b.load(d2);
+  int axis = 1;
+  Hardmax<float> m("localOpName", axis);
+  auto result = m.compute(a);
 
-	std::cout << result ;
-	std::cout << "\n" ;
+  std::cout << result;
+  std::cout << "\n";
 
-	return 0;
+  return 0;
 }
 
 #endif

@@ -30,17 +30,14 @@ using namespace Eigen;
 namespace dnnc {
 template <typename T> class Erf : public baseOperator<T> {
 public:
-  Erf(std::string name = "opErf")
-      : baseOperator<T>(opErf, name) {}
+  Erf(std::string name = "opErf") : baseOperator<T>(opErf, name) {}
 
-  tensor<T> 
-      compute(tensor<T>& a)
-	  {
-	  	tensor<T> result(a.shape(), a.name());
-	    for (size_t i = 0; i < a.length(); i++)
-		      result[i] = erf(a[i]);
-		  
-		  return result;
-	  }
+  tensor<T> compute(tensor<T> &a) {
+    tensor<T> result(a.shape(), a.name());
+    for (size_t i = 0; i < a.length(); i++)
+      result[i] = erf(a[i]);
+
+    return result;
+  }
 };
 } // namespace dnnc

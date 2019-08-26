@@ -32,49 +32,46 @@ template <typename T> class HardSigmoid : public baseOperator<T> {
 protected:
   float alpha = 0.2;
   float beta = 0.5;
-public:
-  HardSigmoid(std::string name = "opHardSigmoid",float alpha = 0.2,float beta = 0.5)
-      : baseOperator<T>(opHardSigmoid, name) {
-        this->alpha = alpha;
-        this->beta = beta;
-      }
-      static bool compare()
-      {
-        return ( (typeid(T) == typeid(float))||(typeid(T) == typeid(double)) );
-      }
-      bool getAttribute(OPATTR attrName, float &obj)
-      {
-        if (attrName == attr_alpha) {
-          obj = alpha;
-          return true;
-        }
-        else if (attrName == attr_beta){
-          obj = beta;
-          return true;
-        }
-        return false;
-      }
-      static T Hard_Sigmoid(T x,float alpha,float beta)
-      {
-        T temp=T(alpha * x + beta);
-        temp = (1<temp) ? 1 : temp;
-        temp = (0>temp) ? 0 : temp;
-        return temp;
-      }
 
-      // NOT GOOD to return by value
-      tensor<T> compute(tensor<T>& a)
-      {
-      if(!compare() )
-          throw std::invalid_argument("Constrain input and output types to float tensors.");
-      tensor<T> result(a.shape(),a.name());
-      //max(0, min(1, alpha * x + beta))
-      auto c0 = std::bind(Hard_Sigmoid, std::placeholders::_1, alpha,beta);
-      for(size_t i=0;i< a.length();i++)
-      {
-        result[i]=c0(a[i]);
-      }
-      return result;
-      }
-    };
+public:
+  HardSigmoid(std::string name = "opHardSigmoid", float alpha = 0.2,
+              float beta = 0.5)
+      : baseOperator<T>(opHardSigmoid, name) {
+    this->alpha = alpha;
+    this->beta = beta;
+  }
+  static bool compare() {
+    return ((typeid(T) == typeid(float)) || (typeid(T) == typeid(double)));
+  }
+  bool getAttribute(OPATTR attrName, float &obj) {
+    if (attrName == attr_alpha) {
+      obj = alpha;
+      return true;
+    } else if (attrName == attr_beta) {
+      obj = beta;
+      return true;
+    }
+    return false;
+  }
+  static T Hard_Sigmoid(T x, float alpha, float beta) {
+    T temp = T(alpha * x + beta);
+    temp = (1 < temp) ? 1 : temp;
+    temp = (0 > temp) ? 0 : temp;
+    return temp;
+  }
+
+  // NOT GOOD to return by value
+  tensor<T> compute(tensor<T> &a) {
+    if (!compare())
+      throw std::invalid_argument(
+          "Constrain input and output types to float tensors.");
+    tensor<T> result(a.shape(), a.name());
+    // max(0, min(1, alpha * x + beta))
+    auto c0 = std::bind(Hard_Sigmoid, std::placeholders::_1, alpha, beta);
+    for (size_t i = 0; i < a.length(); i++) {
+      result[i] = c0(a[i]);
+    }
+    return result;
+  }
+};
 } // namespace dnnc

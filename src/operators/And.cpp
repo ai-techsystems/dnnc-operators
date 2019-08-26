@@ -31,9 +31,11 @@ using namespace Eigen;
 int main() {
   float d1[6] = {1., 2., 3., 4., 5., 6.};
   float d2[6] = {1., 2., 3., 4., 5., 6.};
-  
-  tensor<float> a(2, 3);a.load(d1);
-  tensor<float> b(2, 3);b.load(d2);
+
+  tensor<float> a(2, 3);
+  a.load(d1);
+  tensor<float> b(2, 3);
+  b.load(d2);
 
   And<float> AND("localOpName");
   auto result = AND.compute(a, b);

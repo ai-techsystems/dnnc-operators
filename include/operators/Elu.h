@@ -29,37 +29,37 @@ using namespace Eigen;
 
 namespace dnnc {
 template <typename T> class Elu : public baseOperator<T> {
-protected:	
-	float alpha = 1.0;
+protected:
+  float alpha = 1.0;
+
 public:
   Elu(std::string name = "opElu", float alpha = 1.0)
       : baseOperator<T>(opElu, name) {
-      	this->alpha = alpha;
-      }
+    this->alpha = alpha;
+  }
 
-      bool getAttribute(OPATTR attrName, float &obj) {
-	    if (attrName == attr_alpha) {
-	      obj = alpha;
-	      return true;
-	    }
-	    return false;
-	  }
-	  
-  tensor<T> 
-      compute(tensor<T>& input )
-	  {
-		  if (input.rank()!=1)
-			  throw std::invalid_argument("tensor dimenions not appropriate for Elu operator."); 
-		  
-		tensor<T> result(input.shape(), input.name());
-	    for (size_t i = 0; i < input.length(); i++)
-	    	/*
-	    	f(x) = alpha * (exp(x) - 1.) for x < 0
-	    		   x for x >= 0
-	    	*/
-		      result[i] = (input[i] < 0) ? (alpha * (exp(input[i]) - 1.)) : input[i];
+  bool getAttribute(OPATTR attrName, float &obj) {
+    if (attrName == attr_alpha) {
+      obj = alpha;
+      return true;
+    }
+    return false;
+  }
 
-		  return result;
-	  }
+  tensor<T> compute(tensor<T> &input) {
+    if (input.rank() != 1)
+      throw std::invalid_argument(
+          "tensor dimenions not appropriate for Elu operator.");
+
+    tensor<T> result(input.shape(), input.name());
+    for (size_t i = 0; i < input.length(); i++)
+      /*
+      f(x) = alpha * (exp(x) - 1.) for x < 0
+                 x for x >= 0
+      */
+      result[i] = (input[i] < 0) ? (alpha * (exp(input[i]) - 1.)) : input[i];
+
+    return result;
+  }
 };
 } // namespace dnnc

@@ -22,7 +22,7 @@
 //
 #include "operators/LeakyRelu.h"
 
-using namespace dnnc ;
+using namespace dnnc;
 using namespace Eigen;
 
 //#define DNNC_IDENTITY_TEST 1
@@ -30,20 +30,21 @@ using namespace Eigen;
 #include <iostream>
 
 int main() {
-	//float d1[6] = {1., -2., 3., 4., 5., 6.};
-	double d1[6] = {12, -2, 3, 4, 5, 6};
-	tensor<double> a(2,3); a.load(d1);
-	//tensor<float> b(3,2); b.load(d2);
-  float alpha=0.3;
-	std::cout << a ;
-	std::cout << "\n" ;
-	LeakyRelu<double> m("localOpName",alpha);
-	auto result = m.compute(a);
+  // float d1[6] = {1., -2., 3., 4., 5., 6.};
+  double d1[6] = {12, -2, 3, 4, 5, 6};
+  tensor<double> a(2, 3);
+  a.load(d1);
+  // tensor<float> b(3,2); b.load(d2);
+  float alpha = 0.3;
+  std::cout << a;
+  std::cout << "\n";
+  LeakyRelu<double> m("localOpName", alpha);
+  auto result = m.compute(a);
 
-	std::cout << result ;
-	std::cout << "\n" ;
+  std::cout << result;
+  std::cout << "\n";
 
-	return 0;
+  return 0;
 }
 
 #endif

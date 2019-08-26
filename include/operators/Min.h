@@ -32,9 +32,10 @@ namespace dnnc {
 template <typename T> class Min : public baseOperator<T> {
   //  Min attributes
   T minEl(std::vector<T> &v) {
-    T min=0;
-    if ( v.size() == 0 )
-        throw std::invalid_argument("Min operator requires non-zero size vector.") ;
+    T min = 0;
+    if (v.size() == 0)
+      throw std::invalid_argument(
+          "Min operator requires non-zero size vector.");
 
     for (size_t i = 0; i < v.size(); i++)
       min = i == 0 ? v[0] : (v[i] < min ? v[i] : min);
@@ -53,17 +54,17 @@ public:
     // 3. create a result tensor with this new shape
     // 4. broadcast other tensors to result vector.
 
-    
-    if ( inputs.size() == 0 )
-    { 
-      throw std::invalid_argument("Min operator requires non-zero size input vector.") ;
+    if (inputs.size() == 0) {
+      throw std::invalid_argument(
+          "Min operator requires non-zero size input vector.");
       return tensor<T>(0);
     }
 
     // for now check every shape is equal and create result tensor.
     for (size_t i = 1; i < inputs.size(); i++)
       if (inputs[0].shape() != inputs[i].shape())
-        throw std::invalid_argument("Min operator requires tensors with equal shape.");
+        throw std::invalid_argument(
+            "Min operator requires tensors with equal shape.");
 
     tensor<T> result(inputs[0].shape());
 

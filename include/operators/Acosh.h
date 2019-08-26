@@ -30,24 +30,23 @@ using namespace std;
 namespace dnnc {
 template <typename T> class Acosh : public baseOperator<T> {
 public:
-  Acosh(std::string name = "opAcosh")
-      : baseOperator<T>(opAcosh, name) {}
+  Acosh(std::string name = "opAcosh") : baseOperator<T>(opAcosh, name) {}
 
-  tensor<T> compute(tensor<T> &a)  {
-	  
-	tensor<T> result(a.shape());
-	
-    for (size_t i = 0; i < a.length(); i++){
-		float x = a[i];
-		if (0 >= x){
-		   result[i] = x;
-		   throw std::invalid_argument(
-          "Warning : tensor value is negative cannot calculate ACOSH");
-			}
-		result[i] = log(x + sqrt(x*x - 1));
-	}
-	
-	return result;
+  tensor<T> compute(tensor<T> &a) {
+
+    tensor<T> result(a.shape());
+
+    for (size_t i = 0; i < a.length(); i++) {
+      float x = a[i];
+      if (0 >= x) {
+        result[i] = x;
+        throw std::invalid_argument(
+            "Warning : tensor value is negative cannot calculate ACOSH");
+      }
+      result[i] = log(x + sqrt(x * x - 1));
+    }
+
+    return result;
   }
-  };
+};
 } // namespace dnnc

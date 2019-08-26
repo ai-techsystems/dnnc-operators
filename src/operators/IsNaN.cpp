@@ -22,26 +22,26 @@
 //
 #include "operators/IsNaN.h"
 
-using namespace dnnc ;
+using namespace dnnc;
 using namespace Eigen;
 
 //#define DNNC_IDENTITY_TEST 1
 #ifdef DNNC_ISNAN_TEST
 #include <iostream>
 
-
 int main() {
-	float d1[12] = {1.1, -2., 3., 4., 5., 6.,1.1, -2., 3., 4., 5., 6.};
-	tensor<float> a(2	,3,2); a.load(d1);
-  a(1,2,1) = NAN;
-	a(1,0,1) = NAN;
-  std::cout << a <<"\n" ;
-	IsNaN<float> m("localOpName");
-	auto result = m.compute(a);
+  float d1[12] = {1.1, -2., 3., 4., 5., 6., 1.1, -2., 3., 4., 5., 6.};
+  tensor<float> a(2, 3, 2);
+  a.load(d1);
+  a(1, 2, 1) = NAN;
+  a(1, 0, 1) = NAN;
+  std::cout << a << "\n";
+  IsNaN<float> m("localOpName");
+  auto result = m.compute(a);
 
-	std::cout << result ;
-	std::cout << "\n" ;
-	return 0;
+  std::cout << result;
+  std::cout << "\n";
+  return 0;
 }
 
 #endif

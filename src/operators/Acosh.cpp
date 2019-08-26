@@ -29,15 +29,15 @@ using namespace Eigen;
 #ifdef DNNC_ACOSH_TEST
 #include <iostream>
 int main() {
-	
-  float d1[4] = {4. , -2 , 0 ,3};
-  tensor<float>a (2,2); a.load(d1);
+
+  float d1[4] = {4., -2, 0, 3};
+  tensor<float> a(2, 2);
+  a.load(d1);
 
   Acosh<float> ACOSH("localOpName");
   auto result = ACOSH.compute(a);
 
   std::cout << result;
   std::cout << "\n";
-		
 }
 #endif

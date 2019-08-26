@@ -22,25 +22,26 @@
 //
 #include "operators/Softsign.h"
 
-using namespace dnnc ;
+using namespace dnnc;
 using namespace Eigen;
 
 //#define DNNC_SOFTSIGN_TEST
-#ifdef DNNC_SOFTSIGN_TEST 
+#ifdef DNNC_SOFTSIGN_TEST
 #include <iostream>
 
 int main() {
-	float d1[6] = {1., 2., 3., 4., 5., 6.};
+  float d1[6] = {1., 2., 3., 4., 5., 6.};
 
-	tensor<float> a(2,3); a.load(d1);
+  tensor<float> a(2, 3);
+  a.load(d1);
 
-	Softsign<float> m("localOpName", 0x0);
-	auto result = m.compute(a);
+  Softsign<float> m("localOpName", 0x0);
+  auto result = m.compute(a);
 
-	std::cout << result ;
-	std::cout << "\n" ;
+  std::cout << result;
+  std::cout << "\n";
 
-	return 0;
+  return 0;
 }
 
 #endif

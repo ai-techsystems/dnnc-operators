@@ -32,13 +32,14 @@ namespace dnnc {
 template <typename T> class Mean : public baseOperator<T> {
   //  Mean attributes
   T meanEl(std::vector<T> &v) {
-    T sum=0;
-    if ( v.size() == 0 )
-        throw std::invalid_argument("Mean operator requires non-zero size vector.") ;
-   
+    T sum = 0;
+    if (v.size() == 0)
+      throw std::invalid_argument(
+          "Mean operator requires non-zero size vector.");
+
     for (size_t i = 0; i < v.size(); i++)
-            sum+=v[i];
-    return sum/v.size();
+      sum += v[i];
+    return sum / v.size();
   }
 
 public:
@@ -52,16 +53,17 @@ public:
     // 3. create a result tensor with this new shape
     // 4. broadcast other tensors to result vector.
 
-    if ( inputs.size() == 0 )
-    { 
-      throw std::invalid_argument("Mean operator requires non-zero size input vector.") ;
+    if (inputs.size() == 0) {
+      throw std::invalid_argument(
+          "Mean operator requires non-zero size input vector.");
       return tensor<T>(0);
     }
 
     // for now check every shape is equal and create result tensor.
     for (size_t i = 1; i < inputs.size(); i++)
       if (inputs[0].shape() != inputs[i].shape())
-        throw std::invalid_argument("Mean operator requires tensors with equal shape.");
+        throw std::invalid_argument(
+            "Mean operator requires tensors with equal shape.");
 
     tensor<T> result(inputs[0].shape());
 
@@ -77,4 +79,3 @@ public:
   }
 };
 } // namespace dnnc
-

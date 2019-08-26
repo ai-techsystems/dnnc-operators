@@ -29,16 +29,17 @@ using namespace Eigen;
 #ifdef DNNC_EYELIKE_TEST
 #include <iostream>
 int main() {
-	float d1[9] = {-1., -2., -3., 1., 2., 3., 4., 5., 6.};
-	tensor<float> a(3,3); a.load(d1);
-	int k = -1;
+  float d1[9] = {-1., -2., -3., 1., 2., 3., 4., 5., 6.};
+  tensor<float> a(3, 3);
+  a.load(d1);
+  int k = -1;
 
-	EyeLike<float> m("localOpName",k);
-	auto result = m.compute(a);
+  EyeLike<float> m("localOpName", k);
+  auto result = m.compute(a);
 
-	std::cout << result ;
-	std::cout << "\n" ;
+  std::cout << result;
+  std::cout << "\n";
 
-	return 0;
+  return 0;
 }
 #endif

@@ -30,20 +30,18 @@ using namespace Eigen;
 namespace dnnc {
 template <typename T> class Div : public baseOperator<T> {
 public:
-  Div(std::string name = "opDiv")
-      : baseOperator<T>(opDiv, name) {}
+  Div(std::string name = "opDiv") : baseOperator<T>(opDiv, name) {}
 
-      tensor<T> 
-      compute(tensor<T>& a, tensor<T>& b)
-	  {
-		  if (a.shape() != b.shape())
-			  throw std::invalid_argument("tensor dimenions not appropriate for Div operator."); 
-		  
-			tensor<T> result(a.shape(), a.name());
-	    	for (size_t i = 0; i < a.length(); i++)
-		    	  result[i] = a[i]/b[i];
+  tensor<T> compute(tensor<T> &a, tensor<T> &b) {
+    if (a.shape() != b.shape())
+      throw std::invalid_argument(
+          "tensor dimenions not appropriate for Div operator.");
 
-		  return result;
-	  }
+    tensor<T> result(a.shape(), a.name());
+    for (size_t i = 0; i < a.length(); i++)
+      result[i] = a[i] / b[i];
+
+    return result;
+  }
 };
-} // namespace dnncs
+} // namespace dnnc

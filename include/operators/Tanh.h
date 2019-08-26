@@ -35,29 +35,22 @@ public:
 
   // bool getAttribute<int>(OPATTR attrName, int& obj) ;
 
-  float Tanh_func(T x){
-          return tanh(x);
-      }
+  float Tanh_func(T x) { return tanh(x); }
 
-	  // NOT GOOD to return by value
-      tensor<T> 
-      compute(tensor<T>& a)
-	  {
-		  DNNC_EIGEN_MATRIX(eigenMatrixA, a) ;
-		  if(a.rank()==2)
-		  {
- 			  tensor<T> result(a.shape()[0], a.shape()[1]);   
-		   	  Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA.unaryExpr(&Tanh_func); 
-				 result.load( eResult.data() ); 
-		  		return result;
-		  }
-		  else if(a.rank()==3)
-		  {
- 			  tensor<T> result(a.shape()[0], a.shape()[1], a.shape()[2]);   
-		   	  Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA.unaryExpr(&Tanh_func); 
-				 result.load( eResult.data() ); 
-		  		return result;
-		  }
-	  }
+  // NOT GOOD to return by value
+  tensor<T> compute(tensor<T> &a) {
+    DNNC_EIGEN_MATRIX(eigenMatrixA, a);
+    if (a.rank() == 2) {
+      tensor<T> result(a.shape()[0], a.shape()[1]);
+      Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA.unaryExpr(&Tanh_func);
+      result.load(eResult.data());
+      return result;
+    } else if (a.rank() == 3) {
+      tensor<T> result(a.shape()[0], a.shape()[1], a.shape()[2]);
+      Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA.unaryExpr(&Tanh_func);
+      result.load(eResult.data());
+      return result;
+    }
+  }
 };
 } // namespace dnnc

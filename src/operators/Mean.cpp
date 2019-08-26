@@ -39,7 +39,6 @@ int main() {
   tensor<float> fTensor3(3, 3);
   fTensor3.load(data3);
 
-
   std::vector<tensor<float>> vt;
   vt.push_back(fTensor1);
   vt.push_back(fTensor2);

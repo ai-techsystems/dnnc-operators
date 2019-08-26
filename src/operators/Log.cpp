@@ -29,16 +29,16 @@ using namespace Eigen;
 #ifdef DNNC_LOG_TEST
 #include <iostream>
 int main() {
- float d1[6] = {1., 2., 3., 4., 5., 6.};
-	
-	tensor<float> a(2,3); a.load(d1);
-	
+  float d1[6] = {1., 2., 3., 4., 5., 6.};
 
-	Log<float> m("localOpName");
-	auto result = m.compute(a);
+  tensor<float> a(2, 3);
+  a.load(d1);
 
-	std::cout << result ;
-	std::cout << "\n" ;
-return 0;
+  Log<float> m("localOpName");
+  auto result = m.compute(a);
+
+  std::cout << result;
+  std::cout << "\n";
+  return 0;
 }
 #endif

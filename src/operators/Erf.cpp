@@ -29,15 +29,16 @@ using namespace Eigen;
 #ifdef DNNC_ERF_TEST
 #include <iostream>
 int main() {
-	float d1[6] = {0., 1., 2., 3., 9., 99.};
-	tensor<float> a(2,3); a.load(d1);
+  float d1[6] = {0., 1., 2., 3., 9., 99.};
+  tensor<float> a(2, 3);
+  a.load(d1);
 
-	Erf<float> m("localOpName");
-	auto result = m.compute(a);
+  Erf<float> m("localOpName");
+  auto result = m.compute(a);
 
-	std::cout << result ;
-	std::cout << "\n" ;
+  std::cout << result;
+  std::cout << "\n";
 
-	return 0;
+  return 0;
 }
 #endif

@@ -32,9 +32,8 @@ protected:
   //  MatMulInteger attributes
   //  NONE
 public:
-  MatMulInteger(std::string name = "opMatMulInteger") : baseOperator<T>(opMatMulInteger, name) {}
-
-
+  MatMulInteger(std::string name = "opMatMulInteger")
+      : baseOperator<T>(opMatMulInteger, name) {}
 
   tensor<int> compute(tensor<T> &a, tensor<T> &b) {
 
@@ -78,7 +77,8 @@ public:
       DNNC_EIGEN_TENSOR_MAP(eigenTensorA, a);
       DNNC_EIGEN_TENSOR_MAP(eigenTensorB, b);
 
-      Tensor<int, 3, RowMajor> eResult(a.shape()[0], a.shape()[1], b.shape()[2]);
+      Tensor<int, 3, RowMajor> eResult(a.shape()[0], a.shape()[1],
+                                       b.shape()[2]);
 
       for (size_t i = 0; i < a.shape()[0]; i++) {
         Tensor<int, 2, RowMajor> eigenTensorChipA = eigenTensorA.chip(i, 0);
@@ -105,7 +105,8 @@ public:
             "tensor dimenions not appropriate for multiplication operator.");
       }
 
-      tensor<int> result(a.shape()[0], a.shape()[1], a.shape()[2], b.shape()[3]);
+      tensor<int> result(a.shape()[0], a.shape()[1], a.shape()[2],
+                         b.shape()[3]);
 
       DNNC_EIGEN_TENSOR4D_MAP(eigenTensorA, a);
       DNNC_EIGEN_TENSOR4D_MAP(eigenTensorB, b);

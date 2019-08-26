@@ -22,7 +22,7 @@
 //
 #include "operators/Identity.h"
 
-using namespace dnnc ;
+using namespace dnnc;
 using namespace Eigen;
 
 //#define DNNC_IDENTITY_TEST 1
@@ -30,17 +30,18 @@ using namespace Eigen;
 #include <iostream>
 
 int main() {
-	float d1[8] = {1., 2., 3., 4., 5., 6.,7.,8.};
-	tensor<float> a(2,2,2); a.load(d1);
-	//tensor<float> b(3,2); b.load(d2);
+  float d1[8] = {1., 2., 3., 4., 5., 6., 7., 8.};
+  tensor<float> a(2, 2, 2);
+  a.load(d1);
+  // tensor<float> b(3,2); b.load(d2);
 
-	Identity<float> m("localOpName");
-	auto result = m.compute(a);
+  Identity<float> m("localOpName");
+  auto result = m.compute(a);
 
-	std::cout << result ;
-	std::cout << "\n" ;
+  std::cout << result;
+  std::cout << "\n";
 
-	return 0;
+  return 0;
 }
 
 #endif

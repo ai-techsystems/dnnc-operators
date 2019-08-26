@@ -30,44 +30,44 @@ using namespace Eigen;
 namespace dnnc {
 template <typename T> class EyeLike : public baseOperator<T> {
 protected:
-	int k = 0;
+  int k = 0;
+
 public:
   EyeLike(std::string name = "opEyeLike", int k = 0)
       : baseOperator<T>(opEyeLike, name) {
-      	this->k = k;
+    this->k = k;
+  }
+
+  bool getAttribute(OPATTR attrName, int &obj) {
+    if (attrName == attr_k) {
+      obj = k;
+      return true;
+    }
+    return false;
+  }
+
+  tensor<T> compute(tensor<T> &a) {
+    if (a.rank() != 2)
+      throw std::invalid_argument(
+          "tensor dimenions not appropriate for EyeLike operator.");
+
+    int row = a.shape()[0];
+    int col = a.shape()[1];
+    tensor<T> result(row, col);
+
+    DNNC_EIGEN_MATRIX(eigenMatrixA, a);
+
+    Matrix<T, Dynamic, Dynamic> eResult(row, col);
+
+    for (int i = 0; i < row; i++) {
+      for (int j = 0; j < col; j++) {
+        eResult(i, j) = (i == (j + k)) ? 1. : 0.;
       }
+    }
 
-	bool getAttribute(OPATTR attrName, int &obj) {
-	    if (attrName == attr_k) {
-	      obj = k;
-	      return true;
-	    }
-	    return false;
-	  }
-  
-  tensor<T> 
-      compute(tensor<T>& a)
-	  {		
-		  if (a.rank()!=2)
-			  throw std::invalid_argument("tensor dimenions not appropriate for EyeLike operator."); 
-		  
-		  int row = a.shape()[0];
-		  int col = a.shape()[1];
-		  tensor<T> result(row, col);
-		  
-		  DNNC_EIGEN_MATRIX(eigenMatrixA, a) ; 
+    result.load(eResult.data());
 
-		  Matrix<T, Dynamic, Dynamic> eResult(row,col);
-		  
-			for (int i=0 ; i< row; i++){
-				for (int j=0 ; j< col; j++){
-					eResult(i,j) = (i==(j+k)) ? 1. : 0.;
-				}    
-			}
-		  
-		  result.load( eResult.data() ); 
-
-		  return result;
-	  }
+    return result;
+  }
 };
 } // namespace dnnc

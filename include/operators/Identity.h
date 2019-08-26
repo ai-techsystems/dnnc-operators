@@ -33,10 +33,6 @@ public:
   Identity(std::string name = "opIdentity")
       : baseOperator<T>(opIdentity, name) {}
 
-      tensor<T>
-      compute(tensor<T>& a)
-    {
-      return a;
-    }
+  tensor<T> compute(tensor<T> &a) { return a; }
 };
 } // namespace dnnc
