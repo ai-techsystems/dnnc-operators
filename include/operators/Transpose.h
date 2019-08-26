@@ -56,6 +56,7 @@ public:
       result.load(eResult.data());
       return result;
     }
+    return a;
   }
 };
 } // namespace dnnc

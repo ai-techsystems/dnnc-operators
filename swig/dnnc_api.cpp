@@ -34,6 +34,7 @@
 #include "operators/Mean.h"
 #include "operators/Min.h"
 #include "operators/ThresholdedRelu.h"
+#include "operators/Transpose.h"
 
 extern std::vector<float> listTupleToVector_Float(PyObject *);
 extern std::vector<size_t> listTupleToVector_SizeT(PyObject *);
@@ -184,6 +185,11 @@ tensor<float> lpnormalization(tensor<float> &input) {
 tensor<int> matmulinteger(tensor<int> &a, tensor<int> &b) {
   MatMulInteger<int> op;
   return op.compute(a, b);
+}
+
+tensor<float> transpose(tensor<float> &a) {
+  dnnc::Transpose<float> op;
+  return op.compute(a);
 }
 
 /*tensor<float> mean(std::vector<tensor<float>> inputs) {
