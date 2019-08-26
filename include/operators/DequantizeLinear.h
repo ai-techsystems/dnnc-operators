@@ -32,7 +32,13 @@ template <typename T> class DequantizeLinear : public baseOperator<T> {
 public:
   DequantizeLinear(std::string name = "opDequantizeLinear")
       : baseOperator<T>(opDequantizeLinear, name) {}
-	    
+/*
+  void temp_sub(tensor <T> & a, tensor<T> & a_zero_point){
+  	  for (size_t i = 0; i < a.length(); i++)
+	      a[i] -= a_zero_point[0];
+  }
+ */
+
   tensor<T> 
       compute(tensor<T>& a,tensor<T>& a_scale,tensor<T>& a_zero_point)
 	  {
@@ -46,17 +52,76 @@ public:
 			  throw std::invalid_argument("tensor types not appropriate for DequantizeLinear operator."); 
 		  
 		  */
-		  tensor<T> result(a.shape()[0], a.shape()[1]); 
-		  
-		  DNNC_EIGEN_MATRIX(eigenMatrixA, a) ; 
-		  DNNC_EIGEN_MATRIX(eigenMatrixA_scale, a_scale) ; 
-		  DNNC_EIGEN_MATRIX(eigenMatrixA_zero_point, a_zero_point) ; 
+			/*
+		  if (a.rank() == 1){
 
-		  Matrix<T, Dynamic, Dynamic> eResult = (eigenMatrixA - eigenMatrixA_zero_point) * eigenMatrixA_scale;
-		  
-		  result.load( eResult.data() ); 
+			  tensor<T> result(a.shape()[0]);
 
+			  temp_sub (a,a_zero_point);
+			  DNNC_EIGEN_MATRIX(eigenMatrixA, a) ; 
+
+			  Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA * a_scale[0];
+			  
+			  result.load( eResult.data() ); 
+			  return result;
+
+			}
+			
+			if (a.rank() == 2){
+
+			  tensor<T> result(a.shape()[0], a.shape()[1]);
+
+			  temp_sub (a,a_zero_point);
+			  DNNC_EIGEN_MATRIX(eigenMatrixA, a) ; 
+
+			  Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA * a_scale[0];
+			  
+			  result.load( eResult.data() ); 
+			  return result;
+			
+			}
+			
+			// Higher rank is not supported till now
+			else if (a.rank() == 3){
+
+			  tensor<T> result(a.shape()[0], a.shape()[1], a.shape()[2]); 
+			  
+			  temp_sub (a,a_zero_point);
+			  DNNC_EIGEN_MATRIX(eigenMatrixA, a) ; 
+
+			  Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA * a_scale[0];
+			  
+			  result.load( eResult.data() ); 
+			  return result;
+
+			}
+			else if (a.rank() == 4){
+
+			  tensor<T> result(a.shape()[0], a.shape()[1], a.shape()[2], a.shape()[3]); 
+			  
+			  temp_sub (a,a_zero_point);
+			  DNNC_EIGEN_MATRIX(eigenMatrixA, a) ; 
+
+			  Matrix<T, Dynamic, Dynamic> eResult = eigenMatrixA * a_scale[0];
+			  
+			  result.load( eResult.data() ); 
+			  return result;
+
+			}
+
+			else{
+				throw std::invalid_argument("tensor dimenions not appropriate for DequantizeLinear operator."); 
+			}
+
+		  return tensor<T>();
+		  */
+
+		tensor<T> result(a.shape(), a.name());
+	    for (size_t i = 0; i < a.length(); i++)
+		      result[i] = (a[i] - a_zero_point[0]) * a_scale[0];
+		  
 		  return result;
+
 	  }
 };
 } // namespace dnnc

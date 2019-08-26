@@ -19,9 +19,7 @@
 # This file is part of DNN compiler maintained at
 # https://github.com/ai-techsystems/dnnCompiler
 
-import os,sys
-
-sys.path.append(os.path.abspath('..'+os.path.sep+'..'+os.path.sep+'swig'));
+import common
 
 import dnnc as dc
 import numpy as np
@@ -32,15 +30,13 @@ class AddTest(unittest.TestCase):
         self.len = 24
         self.np_a = np.random.randn(self.len).astype(np.float32)
         self.np_b = np.random.randn(self.len).astype(np.float32)
-        #self.np_a = np.arange(self.len).astype(np.float32)
-        #self.np_b = np.arange(self.len).astype(np.float32)
         self.dc_a = dc.array(list(self.np_a));
         self.dc_b = dc.array(list(self.np_b));
 
     def test_Add1D (self):
         npr = np.add(self.np_a, self.np_b)
         dcr = dc.add(self.dc_a, self.dc_b)
-        np.testing.assert_allclose(npr, np.array(dcr.data()[0]).astype(np.float32),
+        np.testing.assert_allclose(npr, np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
 
     def test_Add2D (self):
@@ -77,10 +73,9 @@ class AddTest(unittest.TestCase):
         np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
 
+    def teadDown(self):
+        return "test finished"
+
 if __name__ == '__main__':
-    # m = AddTest()
-    # m.test_Add1D()
-    # m.test_Add2D()
-    # m.test_Add3D()
     unittest.main()
     

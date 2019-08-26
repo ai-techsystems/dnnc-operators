@@ -25,39 +25,52 @@ import dnnc as dc
 import numpy as np
 import unittest
 
-class MatMulTest(unittest.TestCase):
-    def setUp(self):
-        self.len = 12
-        self.np_a = np.random.randn(self.len).astype(np.float32)
-        self.np_b = np.random.randn(self.len).astype(np.float32)
-        self.dc_a = dc.array(list(self.np_a))
-        self.dc_b = dc.array(list(self.np_b))
+def temp_flatten(x, shape, axis):
+    new_shape = (1, -1) if axis == 0 else (np.prod(shape[0:axis]).astype(int), -1)
+    y = np.reshape(x, new_shape)
+    return y
 
-    def test_MatMul1D (self):
-        npr = np.matmul(self.np_a, self.np_b)
-        dcr = dc.matmul(self.dc_a, self.dc_b)
+class FlattenTest(unittest.TestCase):
+    def setUp(self):
+        self.len = 24
+        self.np_a = np.random.randn(self.len).astype(np.float32)
+        self.dc_a = dc.array(list(self.np_a))
+
+    def test_Flatten1D (self):
+        shape = (24,)
+        axis = 0
+        npr = temp_flatten(self.np_a,shape,axis)
+        dcr = dc.flatten(self.dc_a,axis)
         np.testing.assert_allclose(npr, np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
-
-    def test_MatMul2D (self):
-        np_a = np.reshape(self.np_a, (3,4))
-        np_b = np.reshape(self.np_b, (4,3))
-        dc_a = dc.reshape(self.dc_a, (3,4))
-        dc_b = dc.reshape(self.dc_b, (4,3))
-        npr = np.matmul(np_a, np_b)
-        dcr = dc.matmul(dc_a, dc_b)
+    
+    def test_Flatten2D (self):
+        shape = (6,4)
+        axis = 1
+        np_a = np.reshape(self.np_a, shape)
+        dc_a = dc.reshape(self.dc_a, shape)
+        npr = temp_flatten(np_a,shape,axis)
+        dcr = dc.flatten(dc_a,axis)
         np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
 
-    def test_MatMul3D (self):
-        np_a = np.reshape(self.np_a, (2,2,3))
-        np_b = np.reshape(self.np_b, (2,3,2))
-        dc_a = dc.reshape(self.dc_a, (2,2,3))
-        dc_b = dc.reshape(self.dc_b, (2,3,2))
-
-        npr = np.matmul(np_a, np_b)
-        dcr = dc.matmul(dc_a, dc_b)
-
+    def test_Flatten3D (self):
+        shape = (2,4,3)
+        axis = 2
+        np_a = np.reshape(self.np_a, shape)
+        dc_a = dc.reshape(self.dc_a, shape)
+        npr = temp_flatten(np_a,shape,axis)
+        dcr = dc.flatten(dc_a,axis)
+        np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
+                rtol=1e-3, atol=1e-3)
+    
+    def test_Flatten4D (self):
+        shape = (2,2,2,3)
+        axis = 4
+        np_a = np.reshape(self.np_a, shape)
+        dc_a = dc.reshape(self.dc_a, shape)
+        npr = temp_flatten(np_a,shape,axis)
+        dcr = dc.flatten(dc_a,axis)
         np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
 

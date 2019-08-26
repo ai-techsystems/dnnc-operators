@@ -21,43 +21,48 @@
 
 import common
 
+import math
 import dnnc as dc
 import numpy as np
 import unittest
 
-class MatMulTest(unittest.TestCase):
-    def setUp(self):
-        self.len = 12
-        self.np_a = np.random.randn(self.len).astype(np.float32)
-        self.np_b = np.random.randn(self.len).astype(np.float32)
-        self.dc_a = dc.array(list(self.np_a))
-        self.dc_b = dc.array(list(self.np_b))
+def temp_erf(x):
+    y = np.vectorize(math.erf)(x).astype(np.float32)
+    return y
 
-    def test_MatMul1D (self):
-        npr = np.matmul(self.np_a, self.np_b)
-        dcr = dc.matmul(self.dc_a, self.dc_b)
+class ErfTest(unittest.TestCase):
+    def setUp(self):
+        self.len = 24
+        self.np_a = np.random.randn(self.len).astype(np.float32)
+        self.dc_a = dc.array(list(self.np_a))
+
+    def test_Erf1D (self):
+        npr = temp_erf(self.np_a)
+        dcr = dc.erf(self.dc_a)
         np.testing.assert_allclose(npr, np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
-
-    def test_MatMul2D (self):
-        np_a = np.reshape(self.np_a, (3,4))
-        np_b = np.reshape(self.np_b, (4,3))
-        dc_a = dc.reshape(self.dc_a, (3,4))
-        dc_b = dc.reshape(self.dc_b, (4,3))
-        npr = np.matmul(np_a, np_b)
-        dcr = dc.matmul(dc_a, dc_b)
+    
+    def test_Erf2D (self):
+        np_a = np.reshape(self.np_a, (6,4))
+        dc_a = dc.reshape(self.dc_a, (6,4))
+        npr = temp_erf(np_a)
+        dcr = dc.erf(dc_a)
         np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
 
-    def test_MatMul3D (self):
-        np_a = np.reshape(self.np_a, (2,2,3))
-        np_b = np.reshape(self.np_b, (2,3,2))
-        dc_a = dc.reshape(self.dc_a, (2,2,3))
-        dc_b = dc.reshape(self.dc_b, (2,3,2))
-
-        npr = np.matmul(np_a, np_b)
-        dcr = dc.matmul(dc_a, dc_b)
-
+    def test_Erf3D (self):
+        np_a = np.reshape(self.np_a, (2,4,3))
+        dc_a = dc.reshape(self.dc_a, (2,4,3))
+        npr = temp_erf(np_a)
+        dcr = dc.erf(dc_a)
+        np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
+                rtol=1e-3, atol=1e-3)
+    
+    def test_Erf4D (self):
+        np_a = np.reshape(self.np_a, (2,2,2,3))
+        dc_a = dc.reshape(self.dc_a, (2,2,2,3))
+        npr = temp_erf(np_a)
+        dcr = dc.erf(dc_a)
         np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
 

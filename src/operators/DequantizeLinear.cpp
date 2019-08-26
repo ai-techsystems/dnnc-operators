@@ -30,20 +30,21 @@ using namespace Eigen;
 #include <iostream>
 int main() {
 	// int d1[6] = {1, 2, 3, 4, 5, 6};
-	float d1[6] = {1., 2., 3., 4., 5., 6.};
-	float d2[1] = {5.};
+	float d1[24] = {1., 2., 3., 4., 5., 6.,1., 2., 3., 4., 5., 6.,
+					1., 2., 3., 4., 5., 6.,1., 2., 3., 4., 5., 6.};
+	float d2[1] = {4.};
 	// int d3[1] = {6};
 	float d3[1] = {6.};
 	
 	// we can't pass both int and float tensor to the compute function for now
 	//tensor<int> a(2,3); a.load(d1);
-	tensor<float> a(2,3); a.load(d1);
+	tensor<float> a(2,2,3,2); a.load(d1);
 	
-	tensor<float> b(1,1); b.load(d2);
+	tensor<float> b(1); b.load(d2);
 
 	// we can't pass both int and float tensor to the compute function for now
 	//tensor<int> c(1,1); c.load(d3);
-	tensor<float> c(1,1); c.load(d3);
+	tensor<float> c(1); c.load(d3);
 
 	DequantizeLinear<float> m("localOpName");
 	auto result = m.compute(a, b, c);

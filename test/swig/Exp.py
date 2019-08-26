@@ -25,39 +25,39 @@ import dnnc as dc
 import numpy as np
 import unittest
 
-class MatMulTest(unittest.TestCase):
+class ExpTest(unittest.TestCase):
     def setUp(self):
-        self.len = 12
+        self.len = 24
         self.np_a = np.random.randn(self.len).astype(np.float32)
-        self.np_b = np.random.randn(self.len).astype(np.float32)
         self.dc_a = dc.array(list(self.np_a))
-        self.dc_b = dc.array(list(self.np_b))
 
-    def test_MatMul1D (self):
-        npr = np.matmul(self.np_a, self.np_b)
-        dcr = dc.matmul(self.dc_a, self.dc_b)
+    def test_Exp1D (self):
+        npr = np.exp(self.np_a)
+        dcr = dc.exp(self.dc_a)
         np.testing.assert_allclose(npr, np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
-
-    def test_MatMul2D (self):
-        np_a = np.reshape(self.np_a, (3,4))
-        np_b = np.reshape(self.np_b, (4,3))
-        dc_a = dc.reshape(self.dc_a, (3,4))
-        dc_b = dc.reshape(self.dc_b, (4,3))
-        npr = np.matmul(np_a, np_b)
-        dcr = dc.matmul(dc_a, dc_b)
+    
+    def test_Exp2D (self):
+        np_a = np.reshape(self.np_a, (6,4))
+        dc_a = dc.reshape(self.dc_a, (6,4))
+        npr = np.exp(np_a)
+        dcr = dc.exp(dc_a)
         np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
 
-    def test_MatMul3D (self):
-        np_a = np.reshape(self.np_a, (2,2,3))
-        np_b = np.reshape(self.np_b, (2,3,2))
-        dc_a = dc.reshape(self.dc_a, (2,2,3))
-        dc_b = dc.reshape(self.dc_b, (2,3,2))
-
-        npr = np.matmul(np_a, np_b)
-        dcr = dc.matmul(dc_a, dc_b)
-
+    def test_Exp3D (self):
+        np_a = np.reshape(self.np_a, (2,4,3))
+        dc_a = dc.reshape(self.dc_a, (2,4,3))
+        npr = np.exp(np_a)
+        dcr = dc.exp(dc_a)
+        np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
+                rtol=1e-3, atol=1e-3)
+    
+    def test_Exp4D (self):
+        np_a = np.reshape(self.np_a, (2,2,2,3))
+        dc_a = dc.reshape(self.dc_a, (2,2,2,3))
+        npr = np.exp(np_a)
+        dcr = dc.exp(dc_a)
         np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
                 rtol=1e-3, atol=1e-3)
 
