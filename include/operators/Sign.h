@@ -31,8 +31,8 @@ namespace dnnc {
   class Sign : public baseOperator<T> {
     protected:
     public:
-      Sign(std::string name="opSign", opAttributes* attrs=0x0) : 
-	     baseOperator<T>(opSign, name, attrs)
+      Sign(std::string name="opSign") : 
+	     baseOperator<T>(opSign, name)
       {}
 
       static bool compare()

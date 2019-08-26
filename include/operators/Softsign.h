@@ -31,8 +31,8 @@ namespace dnnc {
   class Softsign : public baseOperator<T> {
     protected:
     public:
-      Softsign(std::string name="opSoftsign", opAttributes* attrs=0x0) : 
-	     baseOperator<T>(opSoftsign, name, attrs)
+      Softsign(std::string name="opSoftsign") : 
+	     baseOperator<T>(opSoftsign, name)
       {}
 
       static float softsign_func(T x){

@@ -31,8 +31,8 @@ namespace dnnc {
   class Sin : public baseOperator<T> {
     protected:
     public:
-      Sin(std::string name="opSin", opAttributes* attrs=0x0) : 
-	     baseOperator<T>(opSin, name, attrs)
+      Sin(std::string name="opSin") : 
+	     baseOperator<T>(opSin, name)
       {}
 
       static bool compare()

@@ -31,8 +31,8 @@ namespace dnnc {
   class Sqrt : public baseOperator<T> {
     protected:
     public:
-      Sqrt(std::string name="opSqrt", opAttributes* attrs=0x0) : 
-	     baseOperator<T>(opSqrt, name, attrs)
+      Sqrt(std::string name="opSqrt") : 
+	     baseOperator<T>(opSqrt, name)
       {}
       static bool compare()
       {

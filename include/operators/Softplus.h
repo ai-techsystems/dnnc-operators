@@ -31,8 +31,8 @@ namespace dnnc {
   class Softplus : public baseOperator<T> {
     protected:
     public:
-      Softplus(std::string name="opSoftplus", opAttributes* attrs=0x0) : 
-	     baseOperator<T>(opSoftplus, name, attrs)
+      Softplus(std::string name="opSoftplus") : 
+	     baseOperator<T>(opSoftplus, name)
       {}
 
       static bool compare()

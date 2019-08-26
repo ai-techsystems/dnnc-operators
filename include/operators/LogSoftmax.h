@@ -111,7 +111,10 @@ public:
 		  return result;
    }
    else
-      throw std::invalid_argument("tensor dimenions not appropriate for logsoftmax operator.");  */
+   {
+      throw std::invalid_argument("tensor dimenions not appropriate for logsoftmax operator.");
+   }
+   }
  
 }; 
 }// namespace dnnc

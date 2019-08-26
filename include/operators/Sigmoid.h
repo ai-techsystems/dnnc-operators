@@ -31,8 +31,8 @@ namespace dnnc {
   class Sigmoid : public baseOperator<T> {
     protected:
     public:
-      Sigmoid(std::string name="opSigmoid", opAttributes* attrs=0x0) : 
-	     baseOperator<T>(opSigmoid, name, attrs)
+      Sigmoid(std::string name="opSigmoid") : 
+	     baseOperator<T>(opSigmoid, name)
       {}
 
       static bool compare()
