@@ -91,10 +91,6 @@ extern dnnc::tensor<float>  \
         lpnormalization(dnnc::tensor<float>& input);
 extern dnnc::tensor<int>  \
         matmulinteger(dnnc::tensor<int>& a, dnnc::tensor<int>& b);
-//extern dnnc::tensor<float>  \
-        mean(std::vector<dnnc::tensor<float>> inputs);
-//extern dnnc::tensor<float>  \
-        min(std::vector<dnnc::tensor<float>> inputs);
 
 
 extern dnnc::tensor<float> array(PyObject*);
@@ -143,10 +139,6 @@ extern dnnc::tensor<float>  \
         lpnormalization(dnnc::tensor<float>& input);
 extern dnnc::tensor<int>  \
         matmulinteger(dnnc::tensor<int>& a, dnnc::tensor<int>& b);
-//extern dnnc::tensor<float>  \
-        mean(std::vector<dnnc::tensor<float>> inputs);
-//extern dnnc::tensor<float>  \
-        min(std::vector<dnnc::tensor<float>> inputs);
 
 
 
