@@ -38,20 +38,20 @@ public:
   
     static bool compare()
       {
-        return ( (typeid(T) == typeid(float))||(typeid(T) == typeid(double)) );
-      }
+       return ( (typeid(T) == typeid(float))||(typeid(T) == typeid(double)) );
+    }
 
-      tensor<T> compute(tensor<T>& a)
+    tensor<T> compute(tensor<T>& input)
 	  {  
-       if(!compare() )
+      if(!compare() )
           throw std::invalid_argument("Constrain input and output types to float tensors.");
 
 		  
-		  tensor<T> result(a.shape(),a.name()); 
+		  tensor<T> result(input.shape(),input.name()); 
 		  
-		  for(size_t i=0;i< a.length();i++)
+		  for(size_t i=0;i< input.length();i++)
       {
-        result[i]=log(a[i]);    //element-wise
+        result[i]=log(input[i]);    //element-wise
       }
       return result;
    }

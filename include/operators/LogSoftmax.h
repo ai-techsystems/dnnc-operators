@@ -73,8 +73,10 @@ public:
 		  tensor<T> result(input.shape(), input.name()); 
 		  
 		  DNNC_EIGEN_MATRIX(eigenMatrixA, input) ; 
-
+      std::cout<<eigenMatrixA<<std::endl;
+      std::cout<<input.shape()[0]<<std::endl;
       //default cases
+           
       if(axis==1){
          int i,j;
       for ( i=0 ; i<int(input.shape()[0]); i++){
@@ -83,12 +85,12 @@ public:
 					 sum+= exp(eigenMatrixA(i,j));                  //computing softmax as per axis(https://en.wikipedia.org/wiki/Softmax_function)
 				}
       for ( j=0 ; j< int(input.shape()[1]); j++){
-			    eigenMatrixA(i,j)=log(exp(eigenMatrixA(i,j)/sum));          //computing logsoftmax as per axis
+			    eigenMatrixA(i,j)=log(exp(eigenMatrixA(i,j))/sum);          //computing logsoftmax as per axis
 				}               
 			}
     }
 
-    if(axis==0){
+    else if(axis==0){
       int i,j;
       for ( i=0 ; i<int(input.shape()[1]); i++){
          float sum=0;
@@ -103,14 +105,13 @@ public:
 			}
     }
 
-       Matrix<T, Dynamic, Dynamic> eResult= eigenMatrixA;
+      Matrix<T, Dynamic, Dynamic> eResult= eigenMatrixA;
 		  result.load( eResult.data() ); 
 
 		  return result;
    }
    else
-      throw std::invalid_argument("tensor dimenions not appropriate for logsoftmax operator.");
-  }
-};
-} // namespace dnnc
+      throw std::invalid_argument("tensor dimenions not appropriate for logsoftmax operator.");  */
  
+}; 
+}// namespace dnnc

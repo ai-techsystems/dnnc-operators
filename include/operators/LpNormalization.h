@@ -82,8 +82,8 @@ public:
           return input;
         }
    
-    tensor<T> result(input.shape(), input.name());
-
+   
+      tensor<T> result(input.shape(),input.name());
 		  
 		  DNNC_EIGEN_MATRIX(eigenMatrixA, input) ; 
 		 		 
@@ -96,7 +96,7 @@ public:
 				}
      
         for ( j=0 ; j< int(input.shape()[0]); j++){
-			    eigenMatrixA(j,i)/=sum;
+			     result(j,i)=eigenMatrixA(j,i)/sum;
             
 			    }
         }
@@ -111,7 +111,7 @@ public:
 				}
           
           for ( j=0 ; j< int(input.shape()[1]); j++){
-			    eigenMatrixA(i,j)/=sum;
+			    result(i,j)=eigenMatrixA(i,j)/sum;
 				}          
 			 }
     }
@@ -124,7 +124,7 @@ public:
 					 sum+=(eigenMatrixA(j,i)*eigenMatrixA(j,i));
 				}
         for ( j=0 ; j< int(input.shape()[0]); j++){
-					eigenMatrixA(j,i)=eigenMatrixA(j,i)/sqrt(sum);
+					result(j,i)=eigenMatrixA(j,i)/sqrt(sum);
         
 				}   
 			}
@@ -139,14 +139,20 @@ public:
 					 sum+=(eigenMatrixA(i,j)*eigenMatrixA(i,j));
 				}
         for ( j=0 ; j< int(input.shape()[1]); j++){
-					eigenMatrixA(i,j)=eigenMatrixA(i,j)/sqrt(sum); 
-				}   
+					result(i,j)=eigenMatrixA(i,j)/sqrt(sum); 
+         // std::cout<<eigenMatrixA(i,j)<<" ";
+				}
+        //std::cout<<"\n";   
 			}
     }
+
     
-    Matrix<T, Dynamic, Dynamic> eResult=eigenMatrixA;
+    
+    
+    //result=eigenMatrixA; 
+    //Matrix<T, Dynamic, Dynamic> eResult=eigenMatrixA;
 		  
-result.load( eResult.data() ); 
+    //result.load( eResult.data() ); 
     return result;
   }
 };

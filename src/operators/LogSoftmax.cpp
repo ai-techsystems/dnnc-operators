@@ -35,7 +35,7 @@ int main() {
   a.load(d1);
   
   LogSoftmax<float> m("localOpName");
-  auto result = m.compute(a);
+ auto result = m.compute(a);
 
   std::cout << result;
   std::cout << "\n";

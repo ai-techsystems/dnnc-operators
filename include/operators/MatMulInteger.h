@@ -33,58 +33,72 @@ protected:
   //  NONE
 public:
   MatMulInteger(std::string name = "opMatMulInteger") : baseOperator<T>(opMatMulInteger, name) {}
-  tensor<int> compute(tensor<int> &a, tensor<int> &b) {
 
-    if ((a.rank() == 1) || (a.rank() == 2)) {
-      if (a.shape()[1] != b.shape()[0])
+
+
+  tensor<int> compute(tensor<T> &a, tensor<T> &b) {
+
+    if (a.rank() != b.rank())
+      a.broadcast(b);
+
+    if ((a.rank() == 1 && b.rank() == 1)) {
+      if (a.length() != b.length())
         throw std::invalid_argument(
-            "tensor dimenions not appropriate for multiplication operator.");
+            "vector dimensions not appropriate for multiplication operator.");
+
+      tensor<int> result(1);
+      result[0] = 0;
+      for (size_t i = 0; i < a.length(); i++)
+        result[0] += a[i] * b[i];
+
+      return result;
+    } else if (a.rank() == 2 && b.rank() == 2) {
+      if (a.shape()[1] != b.shape()[0])
+        throw std::invalid_argument("matrix dimensions not appropriate for 2D "
+                                    "multiplication operator.");
 
       tensor<int> result(a.shape()[0], b.shape()[1]);
 
       DNNC_EIGEN_MATRIX(eigenMatrixA, a);
       DNNC_EIGEN_MATRIX(eigenMatrixB, b);
 
-      Matrix<int, Dynamic, Dynamic> eResult = eigenMatrixA * eigenMatrixB;
+      Matrix<int, Dynamic, Dynamic, RowMajor> eResult =
+          eigenMatrixA * eigenMatrixB;
 
       result.load(eResult.data());
       return result;
     } else if ((a.rank() == 3)) {
-
-      if ((a.shape()[1] != b.shape()[0]) || (a.shape()[2] != b.shape()[2])) {
-        throw std::invalid_argument(
-            "tensor dimenions not appropriate for multiplication operator.");
+      if ((a.shape()[2] != b.shape()[1]) || (a.shape()[0] != b.shape()[0])) {
+        throw std::invalid_argument("tensor dimensions not appropriate for 3D "
+                                    "multiplication operator.");
       }
 
-      tensor<int> result(a.shape()[0], b.shape()[1], b.shape()[2]);
+      tensor<int> result(a.shape()[0], a.shape()[1], b.shape()[2]);
 
       DNNC_EIGEN_TENSOR_MAP(eigenTensorA, a);
       DNNC_EIGEN_TENSOR_MAP(eigenTensorB, b);
 
-      Tensor<int,3> eResult(a.shape()[0], b.shape()[1], b.shape()[2]);
+      Tensor<int, 3, RowMajor> eResult(a.shape()[0], a.shape()[1], b.shape()[2]);
 
-      for (size_t i = 0; i < a.shape()[2]; i++) {
-	Tensor<int,2> eigenTensorChipA = eigenTensorA.chip(i,2);
-	Tensor<int,2> eigenTensorChipB = eigenTensorB.chip(i,2);
-	
-	auto eigenMatrixA  = Map<Matrix<int, Dynamic, Dynamic>>(eigenTensorChipA.data(), 
-								 a.shape()[0], 
-								 a.shape()[1]);
-	auto eigenMatrixB  = Map<Matrix<int, Dynamic, Dynamic>>(eigenTensorChipB.data(), 
-								 b.shape()[0], 
-								 b.shape()[1]);
-        Matrix<int, Dynamic, Dynamic> eigenMatMulAB = eigenMatrixA * eigenMatrixB;
+      for (size_t i = 0; i < a.shape()[0]; i++) {
+        Tensor<int, 2, RowMajor> eigenTensorChipA = eigenTensorA.chip(i, 0);
+        Tensor<int, 2, RowMajor> eigenTensorChipB = eigenTensorB.chip(i, 0);
 
-	eResult.chip(i, 2) = TensorMap<Tensor<int, 2>>(eigenMatMulAB.data(), 
-							    a.shape()[0], 							    
-							    b.shape()[1]);
+        auto eigenMatrixA = Map<Matrix<int, Dynamic, Dynamic, RowMajor>>(
+            eigenTensorChipA.data(), a.shape()[1], a.shape()[2]);
+        auto eigenMatrixB = Map<Matrix<int, Dynamic, Dynamic, RowMajor>>(
+            eigenTensorChipB.data(), b.shape()[1], b.shape()[2]);
+        Matrix<int, Dynamic, Dynamic, RowMajor> eigenMatMulAB =
+            eigenMatrixA * eigenMatrixB;
+
+        eResult.chip(i, 0) = TensorMap<Tensor<int, 2, RowMajor>>(
+            eigenMatMulAB.data(), a.shape()[1], b.shape()[2]);
       }
 
       result.load(eResult.data());
       return result;
-
-    } else if ((a.rank() == 4)) {
 #ifdef DNNC_HIGHRANK_SUPPORT
+    } else if ((a.rank() == 4)) {
       if ((a.shape()[1] != b.shape()[0]) || (a.shape()[2] != b.shape()[1]) ||
           (a.shape()[3] != b.shape()[2])) {
         throw std::invalid_argument(
