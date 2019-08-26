@@ -91,6 +91,10 @@ extern dnnc::tensor<float>  \
         lpnormalization(dnnc::tensor<float>& input);
 extern dnnc::tensor<int>  \
         matmulinteger(dnnc::tensor<int>& a, dnnc::tensor<int>& b);
+extern dnnc::tensor<float>  \
+        transpose(dnnc::tensor<float> &a) ;
+extern dnnc::tensor<bool> \
+        isinf(dnnc::tensor<float> &a) ;
 
 
 extern dnnc::tensor<float> array(PyObject*);
@@ -114,6 +118,7 @@ extern dnnc::tensor<float> reshape(dnnc::tensor<float>&, PyObject*) ;
       return ;
   }
 }
+%template(bTensor) dnnc::tensor<bool>;
 %template(iTensor) dnnc::tensor<int>;
 %template(fTensor) dnnc::tensor<float>;
 %template(dTensor) dnnc::tensor<double>;
@@ -139,7 +144,10 @@ extern dnnc::tensor<float>  \
         lpnormalization(dnnc::tensor<float>& input);
 extern dnnc::tensor<int>  \
         matmulinteger(dnnc::tensor<int>& a, dnnc::tensor<int>& b);
-
+extern dnnc::tensor<float>  \
+        transpose(dnnc::tensor<float> &a) ;
+extern dnnc::tensor<bool> \
+        isinf(dnnc::tensor<float> &a) ;
 
 
 extern dnnc::tensor<float> array(PyObject* objects);
