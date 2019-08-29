@@ -40,7 +40,7 @@ class LessTest(unittest.TestCase):
     def test_Less1D (self):
         npr = np.less(self.np_a, self.np_b)
         dcr = dc.less(self.dc_a, self.dc_b)
-        np.testing.assert_allclose(npr, np.array(dcr.data()[0]).astype(np.float32),
+        np.testing.assert_allclose(npr, np.array(dcr.data()).astype(np.bool),
                 rtol=1e-3, atol=1e-3)
 
     def test_Less2D (self):
@@ -50,7 +50,7 @@ class LessTest(unittest.TestCase):
         dc_b = dc.reshape(self.dc_b, (3,4));
         npr = np.less(np_a, np_b);
         dcr = dc.less(dc_a, dc_b);
-        np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
+        np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.bool),
                 rtol=1e-3, atol=1e-3)
 
     def test_Less3D (self):
@@ -62,7 +62,7 @@ class LessTest(unittest.TestCase):
         npr = np.less(np_a, np_b);
         dcr = dc.less(dc_a, dc_b);
 
-        np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.float32),
+        np.testing.assert_allclose(npr.flatten(), np.array(dcr.data()).astype(np.bool),
                 rtol=1e-3, atol=1e-3)
 
 if __name__ == '__main__':
@@ -71,4 +71,4 @@ if __name__ == '__main__':
     # m.test_MatMul2D()
     # m.test_MatMul3D()
     unittest.main()
-    
+
