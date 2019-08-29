@@ -44,11 +44,6 @@ public:
     }
     return false;
   }
-  void setAttribute(OPATTR attrName, int &obj) {
-    if (attrName == attr_p) {
-      p = obj;
-    }
-  }
   static bool compare() {
     return ((typeid(T) == typeid(float)) || (typeid(T) == typeid(double)));
   }

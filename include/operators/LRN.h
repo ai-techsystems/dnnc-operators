@@ -93,17 +93,17 @@ public:
       int upper = ((int(input.shape()[1]) - 1) < temp2)
                       ? (int(input.shape()[1]) - 1)
                       : temp2;
-      std::cout << "Current Channel=" << c << "\n";
-      std::cout << "Upper=" << upper << "Lower" << lower << "\n";
+      /*std::cout << "Current Channel=" << c << "\n";
+      std::cout << "Upper=" << upper << "Lower" << lower << "\n";*/
       for (int i = lower; i <= upper; i++) {
         for (size_t j = 0; j < input.shape()[0]; j++) {
           for (size_t k = 0; k < size; k++) {
-            std::cout << input(j, i, k) << ',';
+            /*std::cout << input(j, i, k) << ',';*/
             sq_sum += input(j, i, k) * input(j, i, k);
           }
         }
-        std::cout << "\n";
-        std::cout << "sq_sum= " << sq_sum << std::endl;
+        /*std::cout << "\n";
+        std::cout << "sq_sum= " << sq_sum << std::endl;*/
         for (size_t j = 0; j < input.shape()[0]; j++) {
           for (size_t k = 0; k < size; k++) {
 

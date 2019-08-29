@@ -69,6 +69,7 @@ public:
     eResult.array() = eigenVector.array().unaryExpr(c0);
 
     result.load(eResult.data());
+    result.reshape(shape);
     return result;
   }
 };
