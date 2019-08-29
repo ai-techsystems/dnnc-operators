@@ -287,21 +287,21 @@ tensor<float> thresholded_relu(tensor<float> &input) {
 }
 
 tensor<float> sub(tensor<float>& a, tensor<float>& b) {
-	Mean<float> op;
+	Sub<float> op;
 	return op.compute(input);
 }
 
 tensor<float> tan(tensor<float>& a) {
-	Mean<float> op;
+	Tan<float> op;
 	return op.compute(input);
 }
 
 tensor<float> tanh(tensor<float>& a) {
-	Mean<float> op;
+	Tanh<float> op;
 	return op.compute(input);
 }
 
 tensor<float> transpose(tensor<float>& a) {
-	Mean<float> op;
+	dnnc::Transpose<float> op;
 	return op.compute(input);
 }
