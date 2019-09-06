@@ -25,7 +25,7 @@
 using namespace dnnc;
 using namespace Eigen;
 
-//#define DNNC_ADD_TEST 1
+#define DNNC_ADD_TEST 1
 #ifdef DNNC_ADD_TEST
 #include <iostream>
 
@@ -37,7 +37,7 @@ int main() {
   tensor<float> b(2, 3);
   b.load(d2);
 
-  Add<float> m("localOpName", 0x0);
+  Add<float> m("localOpName");
   auto result = m.compute(a, b);
 
   std::cout << result;
